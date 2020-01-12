@@ -144,7 +144,7 @@ def SpinUp_load(params, run_name, load_name):
     return md
 
 def extenddomain(params, run_name, load_name):
-    restart_time=100
+    restart_time=50
     y_dim, x_dim, slope, dc, gap_halfwidth, step = standardvalues()
     start_icefront=params['start_icefront']
     slab_thickness=params['slab_thickness']
