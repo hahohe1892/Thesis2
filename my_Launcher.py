@@ -38,19 +38,19 @@ plotting='off'
 ## Reference parameters
 y_dim, x_dim, slope, dc, gap_halfwidth, step = standardvalues()
 
-bump_height=[0]#300,-300]#150, 300, -33]
+bump_height=[0,0]#300,-300]#150, 300, -33]
 bump_spread=[0,0]#40000,40000]#31250, 13750, 40000]
 bump_pos=[0,0]#30000,30000]#30000,40000,30000]
 bump_skew=[0,0]#0,0]
 
-bay_height1=[2000]#-1000,3000]
-bay_spread1=[40000]#40000,40000]
-bay_pos1=[30000]#30000,30000]
+bay_height1=[-1000,3000]
+bay_spread1=[40000,40000]
+bay_pos1=[30000,30000]
 bay_skew1=[0,0]
 
-bay_height2=[0]#-1000,3000]
-bay_spread2=[0]#40000,40000]
-bay_pos2=[0]#30000,30000]
+bay_height2=[-1000,3000]
+bay_spread2=[40000,40000]
+bay_pos2=[30000,30000]
 bay_skew2=[0,0]
 
 slab_thickness=[1200]
@@ -313,7 +313,7 @@ for run in range(0,run_number):
         load_name='./Models/'+which_run[run_type][2]
         run_name=prefix+'_'+which_run[run_type][0]+'_SG'+'_spcvx'+str(spcvx_list[run])+'_NL'+str(params['null_level'])+'_FrM'+str(params['frontal_melt'])+'_FlMreal'+str(params['floating_melt'])+'_FC'+str(params['friction'])+'_FT'+str(params['final_time'])+'_TS'+str(params['timestepping'])+'_OF'+str(params['output_frequency'])+'_hmin'+str(params['hmin'])+'_BuH'+str(params['bump_height'])+'_BuP'+str(params['bump_pos'])+'_BuS'+str(params['bump_spread'])+'_ByH'+str(params['bay_height1'])+'_ByP'+str(params['bay_pos1'])+'_ByS'+str(params['bay_spread1'])+'_'+clusterident+'_IF'+str(params['start_icefront'])+'_MS'+str(params['max_stress'])+'_newMassSpc'+'_MSF'+str(params['max_stress_floating'])+'_xdim'+str(params['x_dim'])+'_fineMesh'+'_noMinCalv'+'_accT800'+'_parStart35'+'_inH'+str(params['influx_height'])
     elif run_type == 'extenddomain':
-        load_name='./Models/'+which_run[run_type][2]
+        load_name='../../share_setup/Models/'+which_run[run_type][2]
         run_name=prefix+'_'+which_run[run_type][0]+'_SG'+'_spcvx'+str(spcvx_list[run])+'_NL'+str(params['null_level'])+'_FrM'+str(params['frontal_melt'])+'_FlMreal'+str(params['floating_melt'])+'_FC'+str(params['friction'])+'_FT'+str(params['final_time'])+'_TS'+str(params['timestepping'])+'_OF'+str(params['output_frequency'])+'_hmin'+str(params['hmin'])+'_BuH'+str(params['bump_height'])+'_BuP'+str(params['bump_pos'])+'_BuS'+str(params['bump_spread'])+'_ByH'+str(params['bay_height1'])+'_ByP'+str(params['bay_pos1'])+'_ByS'+str(params['bay_spread1'])+'_'+clusterident+'_IF'+str(params['start_icefront'])+'_MS'+str(params['max_stress'])+'_newMassSpc'+'_MSF'+str(params['max_stress_floating'])+'_xdim'+str(params['x_dim'])+'_finestMesh'+'_noMinCalv'+'_accT177'+'_parStart10'+'_inH'+str(params['influx_height'])
     else:
         print('run_type "{}" is not recognised possibilities are :{}'.format(run_type, which_run.keys()))
@@ -321,7 +321,7 @@ for run in range(0,run_number):
     # }}}
     # Check existence {{{
     #vtk_name = '/media/thomas/TOSHIBA EXT/Geometry_Project/Results/' + run_name
-    model_name= './Models/'+run_name + '.nc'
+    model_name= '../../share_setup/Models/'+run_name + '.nc'
     if path.exists(model_name):
         print('File {} allready exists, skipping'.format(model_name))
         continue
