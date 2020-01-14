@@ -67,6 +67,9 @@ def SpinUp(params, run_name, load_name):
     #y_dim_friction=scale(-md.mesh.x)*5
     #md.friction.coefficient=flat_bed*0.03+params['friction']+y_dim_friction
     md.friction.coefficient=params['friction']*np.ones(md.mesh.numberofvertices)
+    
+    md.calving=calving()
+    md.calving.calvingrate=100*np.ones(md.mesh.numberofvertices)
 
     md=parameterize(md, 'my_Par2.py')
     md=setflowequation(md, 'SSA', 'all')
