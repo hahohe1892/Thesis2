@@ -29,9 +29,9 @@ else:
 
 prefix = 'GeomProj'
 
-#run_type='SpinUp'   
+run_type='SpinUp'   
 #run_type='SpinUp_load' 
-run_type='extenddomain' 
+#run_type='extenddomain' 
 
 plotting='off'
 
@@ -56,23 +56,23 @@ bay_skew2=[0,0]
 slab_thickness=[1200]
 steepness=[1./300]
 min_thickness_mask=[1]
-spcvx=[700]
+spcvx=[500]
 hmin=[350]
 null_level=[-500]
-frontal_melt=[4000]
-floating_melt=[300]
+frontal_melt=[0]
+floating_melt=[0]
 friction=[35]
 start_icefront=[20000]
 max_stress=[1000000]
 max_stress_floating=[100000]
-influx_height=[1500]
+influx_height=[0]
 
 
 final_time=[50]
 timestepping=[0.01]
 output_frequency=[100]
 
-x_dim=[70000]
+x_dim=[50000]
 
 ## define parameters lists
 
@@ -305,7 +305,7 @@ for run in range(0,run_number):
         load_name=which_run[run_type][2]+'.nc'
         #run_name=prefix+'_'+which_run[run_type][0]+str(slab_thickness_list[run])+'_'+str(final_time_list[run])+'a'+'_'+'steepness'+str(round(steepness_list[run],3)) +'_'+'min_thickness_mask'+str(min_thickness_mask_list[run])+'_'+'timestep'+str(timestepping_list[run])+'_'+'hmin'+str(hmin_list[run])+'_'+'gradation1.7'+'_'+'spcvx'+str(spcvx_list[run])+'_'+'hmax1000'+'_'+'ydim20000'+'gap_halfwidth2500'+'_testnewshape'
         if bay_pos1==bay_pos2:
-            run_name=prefix+'_'+which_run[run_type][0]+'_SG'+'_spcvx'+str(spcvx_list[run])+'_NL'+str(params['null_level'])+'_FrM'+str(params['frontal_melt'])+'_FlMreal'+str(params['floating_melt'])+'_FC'+str(params['friction'])+'_FT'+str(params['final_time'])+'_TS'+str(params['timestepping'])+'_OF'+str(params['output_frequency'])+'_hmin'+str(params['hmin'])+'_BuH'+str(params['bump_height'])+'_BuP'+str(params['bump_pos'])+'_BuS'+str(params['bump_spread'])+'_ByH'+str(params['bay_height1'])+'_ByP'+str(params['bay_pos1'])+'_ByS'+str(params['bay_spread1'])+'_'+clusterident+'_IF'+str(params['start_icefront'])+'_MS'+str(params['max_stress'])+'_newestMassSpc'+'_MSF'+str(params['max_stress_floating'])+'_xdim'+str(params['x_dim'])+'_fineMesh75'+'_noMinCalv'+'_parStart10'
+            run_name=prefix+'_'+which_run[run_type][0]+'_SG'+'_spcvx'+str(spcvx_list[run])+'_NL'+str(params['null_level'])+'_FrM'+str(params['frontal_melt'])+'_FlMreal'+str(params['floating_melt'])+'_FC'+str(params['friction'])+'_FT'+str(params['final_time'])+'_TS'+str(params['timestepping'])+'_OF'+str(params['output_frequency'])+'_hmin'+str(params['hmin'])+'_BuH'+str(params['bump_height'])+'_BuP'+str(params['bump_pos'])+'_BuS'+str(params['bump_spread'])+'_ByH'+str(params['bay_height1'])+'_ByP'+str(params['bay_pos1'])+'_ByS'+str(params['bay_spread1'])+'_'+clusterident+'_IF'+str(params['start_icefront'])+'_MS'+str(params['max_stress'])+'_newestMassSpc'+'_MSF'+str(params['max_stress_floating'])+'_xdim'+str(params['x_dim'])+'_fineMesh75'+'_preCalv'+'_parStart10'
         else:
             run_name=prefix+'_'+which_run[run_type][0]+'_spcvx'+str(spcvx_list[run])+'_NL'+str(params['null_level'])+'_FrM'+str(params['frontal_melt'])+'_FlM'+str(params['floating_melt'])+'_FT'+str(params['final_time'])+'_TS'+str(params['timestepping'])+'_OF'+str(params['output_frequency'])+'_hmin'+str(params['hmin'])+'_BuH'+str(params['bump_height'])+'_BuP'+str(params['bump_pos'])+'_BuS'+str(params['bump_spread'])+'_ByH1'+str(params['bay_height1'])+'_ByP1'+str(params['bay_pos1'])+'_ByS1'+str(params['bay_spread1'])+'_ByH2'+str(params['bay_height2'])+'_ByP2'+str(params['bay_pos2'])+'_ByS2'+str(params['bay_pos2'])+'_'+clusterident+'_IF'+str(params['start_icefront'])+'_linRheol'+'spcvy0'
     elif run_type == 'SetUp':
