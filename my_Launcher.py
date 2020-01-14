@@ -60,7 +60,7 @@ spcvx=[500]
 hmin=[350]
 null_level=[-500]
 frontal_melt=[200]
-floating_melt=[30]
+floating_melt=[0]
 friction=[35]
 start_icefront=[1000]
 max_stress=[1000000]
@@ -68,7 +68,7 @@ max_stress_floating=[100000]
 influx_height=[-750]
 
 
-final_time=[50]
+final_time=[20]
 timestepping=[0.01]
 output_frequency=[100]
 
