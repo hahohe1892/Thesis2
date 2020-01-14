@@ -56,16 +56,16 @@ bay_skew2=[0,0]
 slab_thickness=[1200]
 steepness=[1./300]
 min_thickness_mask=[1]
-spcvx=[1000]
+spcvx=[700]
 hmin=[350]
 null_level=[-500]
-frontal_melt=[0]
-floating_melt=[0]
+frontal_melt=[600]
+floating_melt=[80]
 friction=[35]
 start_icefront=[20000]
 max_stress=[1000000]
 max_stress_floating=[100000]
-influx_height=[750]
+influx_height=[1500]
 
 
 final_time=[50]
@@ -261,8 +261,9 @@ which_run={'SpinUp':['SpinUp', 'SpinUp', 'dummy', 'Transient'],
           #'extenddomain':['extenddomain', 'extenddomain','GeomProj_extenddomain_SG_spcvx400_NL-500_FrM1000_FlMreal60_FC35_FT80_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF20000_MS1000000_newMassSpc_MSF300000_xdim70000_finestMesh_noMinCalv_accT300_parStart10_inH1500.nc','Transient']
            #'extenddomain':['extenddomain', 'extenddomain','GeomProj_extenddomain_SG_spcvx400_NL-500_FrM1000_FlMreal60_FC35_FT20_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF20000_MS1000000_newMassSpc_MSF100000_xdim70000_finestMesh_noMinCalv_accT320_parStart10_inH1500.nc','Transient']
             #'extenddomain':['extenddomain', 'extenddomain','GeomProj_SpinUp_SG_spcvx700_NL-500_FrM0_FlMreal0_FC35_FT50_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF20000_MS1000000_newestMassSpc_MSF100000_xdim50000_fineMesh75_noMinCalv_parStart10.nc','Transient']
-           'extenddomain':['extenddomain', 'extenddomain','GeomProj_extenddomain_SG_spcvx700_NL-500_FrM0_FlMreal0_FC35_FT100_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF20000_MS1000000_newMassSpc_MSF100000_xdim70000_finestMesh_noMinCalv_accT127_parStart10_inH1500.nc','Transient']
+           #'extenddomain':['extenddomain', 'extenddomain','GeomProj_extenddomain_SG_spcvx700_NL-500_FrM0_FlMreal0_FC35_FT100_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF20000_MS1000000_newMassSpc_MSF100000_xdim70000_finestMesh_noMinCalv_accT127_parStart10_inH1500.nc','Transient']
            #'extenddomain':['extenddomain', 'extenddomain','GeomProj_extenddomain_SG_spcvx700_NL-500_FrM0_FlMreal0_FC35_FT50_TS0.01_OF100_hmin350_BuH300_BuP30000_BuS40000_ByH0_ByP0_ByS0_Stallo_IF20000_MS1000000_newMassSpc_MSF100000_xdim70000_finestMesh_noMinCalv_accT177_parStart10_inH1500.nc','Transient']
+           'extenddomain':['extenddomain', 'extenddomain','GeomProj_extenddomain_SG_spcvx700_NL-500_FrM0_FlMreal0_FC35_FT50_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF20000_MS1000000_newMassSpc_MSF100000_xdim70000_finestMesh_noMinCalv_accT177_parStart10_inH1500.nc','Transient']
            }
 
 
@@ -315,7 +316,7 @@ for run in range(0,run_number):
         run_name=prefix+'_'+which_run[run_type][0]+'_SG'+'_spcvx'+str(spcvx_list[run])+'_NL'+str(params['null_level'])+'_FrM'+str(params['frontal_melt'])+'_FlMreal'+str(params['floating_melt'])+'_FC'+str(params['friction'])+'_FT'+str(params['final_time'])+'_TS'+str(params['timestepping'])+'_OF'+str(params['output_frequency'])+'_hmin'+str(params['hmin'])+'_BuH'+str(params['bump_height'])+'_BuP'+str(params['bump_pos'])+'_BuS'+str(params['bump_spread'])+'_ByH'+str(params['bay_height1'])+'_ByP'+str(params['bay_pos1'])+'_ByS'+str(params['bay_spread1'])+'_'+clusterident+'_IF'+str(params['start_icefront'])+'_MS'+str(params['max_stress'])+'_newMassSpc'+'_MSF'+str(params['max_stress_floating'])+'_xdim'+str(params['x_dim'])+'_fineMesh'+'_noMinCalv'+'_accT800'+'_parStart35'+'_inH'+str(params['influx_height'])
     elif run_type == 'extenddomain':
         load_name='../../share_setup/Models/'+which_run[run_type][2]
-        run_name=prefix+'_'+which_run[run_type][0]+'_SG'+'_spcvx'+str(spcvx_list[run])+'_NL'+str(params['null_level'])+'_FrM'+str(params['frontal_melt'])+'_FlMreal'+str(params['floating_melt'])+'_FC'+str(params['friction'])+'_FT'+str(params['final_time'])+'_TS'+str(params['timestepping'])+'_OF'+str(params['output_frequency'])+'_hmin'+str(params['hmin'])+'_BuH'+str(params['bump_height'])+'_BuP'+str(params['bump_pos'])+'_BuS'+str(params['bump_spread'])+'_ByH'+str(params['bay_height1'])+'_ByP'+str(params['bay_pos1'])+'_ByS'+str(params['bay_spread1'])+'_'+clusterident+'_IF'+str(params['start_icefront'])+'_MS'+str(params['max_stress'])+'_newMassSpc'+'_MSF'+str(params['max_stress_floating'])+'_xdim'+str(params['x_dim'])+'_finestMesh'+'_noMinCalv'+'_accT177'+'_parStart10'+'_inH'+str(params['influx_height'])
+        run_name=prefix+'_'+which_run[run_type][0]+'_SG'+'_spcvx'+str(spcvx_list[run])+'_NL'+str(params['null_level'])+'_FrM'+str(params['frontal_melt'])+'_FlMreal'+str(params['floating_melt'])+'_FC'+str(params['friction'])+'_FT'+str(params['final_time'])+'_TS'+str(params['timestepping'])+'_OF'+str(params['output_frequency'])+'_hmin'+str(params['hmin'])+'_BuH'+str(params['bump_height'])+'_BuP'+str(params['bump_pos'])+'_BuS'+str(params['bump_spread'])+'_ByH'+str(params['bay_height1'])+'_ByP'+str(params['bay_pos1'])+'_ByS'+str(params['bay_spread1'])+'_'+clusterident+'_IF'+str(params['start_icefront'])+'_MS'+str(params['max_stress'])+'_newMassSpc'+'_MSF'+str(params['max_stress_floating'])+'_xdim'+str(params['x_dim'])+'_finestMesh'+'_noMinCalv'+'_accT227'+'_parStart10'+'_inH'+str(params['influx_height'])
     else:
         print('run_type "{}" is not recognised possibilities are :{}'.format(run_type, which_run.keys()))
 
