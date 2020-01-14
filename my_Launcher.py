@@ -18,8 +18,8 @@ clustername = 'Stallo'
 
 if clustername == 'Stallo':
     clusterident='Stallo'
-    #cluster = stallo('numnodes', 1, 'cpuspernode', 16, 'time', 4 * 60, 'queue', 'devel')  # time in minutes
-    cluster = stallo('numnodes', 1, 'cpuspernode', 16, 'mem', 1.9, 'time', 20 * 60)  #time in minutes
+    cluster = stallo('numnodes', 1, 'cpuspernode', 16, 'time', 4 * 60, 'queue', 'devel')  # time in minutes
+    #cluster = stallo('numnodes', 1, 'cpuspernode', 16, 'mem', 1.9, 'time', 20 * 60)  #time in minutes
     #cluster = stallo('numnodes', 1, 'cpuspernode', 16, 'mem', 1.9, 'time', 10 * 60)  #time in minutes
 else:
     #cluster = generic('name', clustername, 'np', 1, 'valgrind', '/usr/bin/valgrind', 'valgrindlib', '/usr/lib/valgrind/libmpiwrap-amd64-linux.so')
@@ -59,12 +59,12 @@ min_thickness_mask=[1]
 spcvx=[700]
 hmin=[350]
 null_level=[-500]
-frontal_melt=[0]
-floating_melt=[0]
+frontal_melt=[4000]
+floating_melt=[300]
 friction=[35]
 start_icefront=[20000]
-max_stress=[500000]
-max_stress_floating=[0]
+max_stress=[1000000]
+max_stress_floating=[100000]
 influx_height=[1500]
 
 
