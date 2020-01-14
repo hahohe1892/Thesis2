@@ -67,6 +67,9 @@ def SpinUp(params, run_name, load_name):
     #y_dim_friction=scale(-md.mesh.x)*5
     #md.friction.coefficient=flat_bed*0.03+params['friction']+y_dim_friction
     md.friction.coefficient=params['friction']*np.ones(md.mesh.numberofvertices)
+    
+    md.calving=calving()
+    md.calving.calvingrate=100*np.ones(md.mesh.numberofvertices)
 
     md=parameterize(md, 'my_Par2.py')
     md=setflowequation(md, 'SSA', 'all')
@@ -104,6 +107,7 @@ def SpinUp(params, run_name, load_name):
     md.calving.stress_threshold_floatingice=params['max_stress_floating'] 
 
     thk_dif=(dc+params['influx_height']+params['null_level'])*np.ones(len(md.mesh.x[np.where(md.mesh.x==0)]))-md.geometry.base[np.where(md.mesh.x<5)]
+    thk_dif[np.where(thk_dif<0)]=1
     md.masstransport.spcthickness[np.where(md.mesh.x<5)]=thk_dif
     md.geometry.thickness[np.where(md.mesh.x<5)]=md.masstransport.spcthickness[np.where(md.mesh.x<5)]
     md.geometry.surface[np.where(md.mesh.x<5)]=md.geometry.base[np.where(md.mesh.x<5)]+md.geometry.thickness[np.where(md.mesh.x<5)]
