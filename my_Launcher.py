@@ -59,8 +59,8 @@ min_thickness_mask=[1]
 spcvx=[500]
 hmin=[350]
 null_level=[-500]
-frontal_melt=[0]
-floating_melt=[0]
+frontal_melt=[200]
+floating_melt=[30]
 friction=[35]
 start_icefront=[20000]
 max_stress=[1000000]
@@ -352,7 +352,7 @@ for run in range(0,run_number):
         else:
             md.cluster.interactive = 1
             md.settings.waitonlock = math.inf
-        md.transient.requested_outputs=['TotalSmb','SmbMassBalance','IceVolume','IceVolumeAboveFloatation',  'IceVolumeAboveFloatationScaled','GroundedAreaScaled',  'FloatingAreaScaled','IceMass','GroundedArea','FloatingArea','TotalFloatingBmb',   'BasalforcingsFloatingiceMeltingRate','Calvingratex','Calvingratey','CalvingCalvingrate', 'TotalCalvingFluxLevelset']
+        md.transient.requested_outputs=['TotalSmb','SmbMassBalance','IceVolume','IceVolumeAboveFloatation',  'IceVolumeAboveFloatationScaled','GroundedAreaScaled',  'FloatingAreaScaled','IceMass','GroundedArea','FloatingArea','TotalFloatingBmb',   'BasalforcingsFloatingiceMeltingRate','CalvingCalvingrate']
         md = solve(md, which_run[run_type][3], 'runtimename', 0)
         
     # }}}
