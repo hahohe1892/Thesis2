@@ -56,11 +56,11 @@ bay_skew2=[0,0]
 slab_thickness=[1200]
 steepness=[1./300]
 min_thickness_mask=[1]
-spcvx=[700]
+spcvx=[350]
 hmin=[350]
 null_level=[-500]
-frontal_melt=[600]
-floating_melt=[80]
+frontal_melt=[0]
+floating_melt=[0]
 friction=[35]
 start_icefront=[20000]
 max_stress=[1000000]
@@ -392,4 +392,4 @@ if launch_or_get=='r' and plotting =='on':
     pp.close()
 
  
-    
+ 
