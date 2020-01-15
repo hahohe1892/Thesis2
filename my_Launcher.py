@@ -18,8 +18,8 @@ clustername = 'Stallo'
 
 if clustername == 'Stallo':
     clusterident='Stallo'
-    cluster = stallo('numnodes', 1, 'cpuspernode', 16, 'time', 4 * 60, 'queue', 'devel')  # time in minutes
-    #cluster = stallo('numnodes', 1, 'cpuspernode', 16, 'mem', 1.9, 'time', 20 * 60)  #time in minutes
+    #cluster = stallo('numnodes', 1, 'cpuspernode', 16, 'time', 4 * 60, 'queue', 'devel')  # time in minutes
+    cluster = stallo('numnodes', 1, 'cpuspernode', 16, 'mem', 1.9, 'time', 20 * 60)  #time in minutes
     #cluster = stallo('numnodes', 1, 'cpuspernode', 16, 'mem', 1.9, 'time', 10 * 60)  #time in minutes
 else:
     #cluster = generic('name', clustername, 'np', 1, 'valgrind', '/usr/bin/valgrind', 'valgrindlib', '/usr/lib/valgrind/libmpiwrap-amd64-linux.so')
@@ -29,9 +29,9 @@ else:
 
 prefix = 'GeomProj'
 
-#run_type='SpinUp'   
+run_type='SpinUp'   
 #run_type='SpinUp_load' 
-run_type='extenddomain' 
+#run_type='extenddomain' 
 
 plotting='off'
 
@@ -63,16 +63,16 @@ frontal_melt=[0]
 floating_melt=[0]
 friction=[35]
 start_icefront=[20000]
-max_stress=[500000]
-max_stress_floating=[10]
+max_stress=[1000000]
+max_stress_floating=[1]
 influx_height=[1500]
 
 
-final_time=[25]
+final_time=[20]
 timestepping=[0.01]
 output_frequency=[100]
 
-x_dim=[70000]
+x_dim=[50000]
 
 ## define parameters lists
 
@@ -352,7 +352,7 @@ for run in range(0,run_number):
         else:
             md.cluster.interactive = 1
             md.settings.waitonlock = math.inf
-        md.transient.requested_outputs=['TotalSmb','SmbMassBalance','IceVolume','IceVolumeAboveFloatation',  'IceVolumeAboveFloatationScaled','GroundedAreaScaled',  'FloatingAreaScaled','IceMass','GroundedArea','FloatingArea','TotalFloatingBmb',   'BasalforcingsFloatingiceMeltingRate','Calvingratex','Calvingratey','CalvingCalvingrate', 'TotalCalvingFluxLevelset']
+        md.transient.requested_outputs=['TotalSmb','SmbMassBalance','IceVolume','IceVolumeAboveFloatation',  'IceVolumeAboveFloatationScaled','GroundedAreaScaled',  'FloatingAreaScaled','IceMass','GroundedArea','FloatingArea','TotalFloatingBmb',   'BasalforcingsFloatingiceMeltingRate','CalvingCalvingrate']
         md = solve(md, which_run[run_type][3], 'runtimename', 0)
         
     # }}}
