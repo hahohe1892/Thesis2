@@ -53,26 +53,26 @@ bay_spread2=[0,0]
 bay_pos2=[0,0]
 bay_skew2=[0,0]
 
-slab_thickness=[1200]
+slab_thickness=[2000]
 steepness=[1./300]
 min_thickness_mask=[1]
-spcvx=[700]
+spcvx=[300]
 hmin=[350]
 null_level=[-500]
-frontal_melt=[0]
-floating_melt=[0]
+frontal_melt=[200]
+floating_melt=[30]
 friction=[35]
-start_icefront=[20000]
+start_icefront=[90000]
 max_stress=[1000000]
-max_stress_floating=[1]
-influx_height=[1500]
+max_stress_floating=[100000]
+influx_height=[0]
 
 
-final_time=[20]
+final_time=[25]
 timestepping=[0.01]
 output_frequency=[100]
 
-x_dim=[50000]
+x_dim=[92000]
 
 ## define parameters lists
 
@@ -352,7 +352,7 @@ for run in range(0,run_number):
         else:
             md.cluster.interactive = 1
             md.settings.waitonlock = math.inf
-        md.transient.requested_outputs=['TotalSmb','SmbMassBalance','IceVolume','IceVolumeAboveFloatation',  'IceVolumeAboveFloatationScaled','GroundedAreaScaled',  'FloatingAreaScaled','IceMass','GroundedArea','FloatingArea','TotalFloatingBmb',   'BasalforcingsFloatingiceMeltingRate','CalvingCalvingrate']
+        md.transient.requested_outputs=['TotalSmb','SmbMassBalance','IceVolume','IceVolumeAboveFloatation',  'IceVolumeAboveFloatationScaled','GroundedAreaScaled',  'FloatingAreaScaled','IceMass','GroundedArea','FloatingArea','TotalFloatingBmb',   'BasalforcingsFloatingiceMeltingRate', 'IcefrontMassFluxLevelset','IcefrontMassFlux', 'GroundinglineMassFlux']
         md = solve(md, which_run[run_type][3], 'runtimename', 0)
         
     # }}}
