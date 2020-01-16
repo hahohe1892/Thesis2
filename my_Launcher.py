@@ -19,7 +19,7 @@ clustername = 'Stallo'
 if clustername == 'Stallo':
     clusterident='Stallo'
     #cluster = stallo('numnodes', 1, 'cpuspernode', 16, 'time', 4 * 60, 'queue', 'devel')  # time in minutes
-    cluster = stallo('numnodes', 1, 'cpuspernode', 16, 'mem', 1.9, 'time', 7 * 60)  #time in minutes
+    cluster = stallo('numnodes', 1, 'cpuspernode', 16, 'mem', 1.9, 'time', 10 * 60)  #time in minutes
     #cluster = stallo('numnodes', 1, 'cpuspernode', 16, 'mem', 1.9, 'time', 10 * 60)  #time in minutes
 else:
     #cluster = generic('name', clustername, 'np', 1, 'valgrind', '/usr/bin/valgrind', 'valgrindlib', '/usr/lib/valgrind/libmpiwrap-amd64-linux.so')
@@ -29,9 +29,9 @@ else:
 
 prefix = 'GeomProj'
 
-run_type='SpinUp'   
+#run_type='SpinUp'   
 #run_type='SpinUp_load' 
-#run_type='extenddomain' 
+run_type='extenddomain' 
 
 plotting='off'
 
@@ -56,19 +56,19 @@ bay_skew2=[0,0]
 slab_thickness=[2000]
 steepness=[1./300]
 min_thickness_mask=[1]
-spcvx=[300,500]
+spcvx=[300]
 hmin=[350]
 null_level=[-500]
 frontal_melt=[200]
 floating_melt=[30]
-friction=[35,70]
+friction=[50]
 start_icefront=[90000]
 max_stress=[1000000]
 max_stress_floating=[100000]
 influx_height=[0]
 
 
-final_time=[25]
+final_time=[75]
 timestepping=[0.01]
 output_frequency=[100]
 
@@ -263,7 +263,8 @@ which_run={'SpinUp':['SpinUp', 'SpinUp', 'dummy', 'Transient'],
             #'extenddomain':['extenddomain', 'extenddomain','GeomProj_SpinUp_SG_spcvx700_NL-500_FrM0_FlMreal0_FC35_FT50_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF20000_MS1000000_newestMassSpc_MSF100000_xdim50000_fineMesh75_noMinCalv_parStart10.nc','Transient']
            #'extenddomain':['extenddomain', 'extenddomain','GeomProj_extenddomain_SG_spcvx700_NL-500_FrM0_FlMreal0_FC35_FT100_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF20000_MS1000000_newMassSpc_MSF100000_xdim70000_finestMesh_noMinCalv_accT127_parStart10_inH1500.nc','Transient']
            #'extenddomain':['extenddomain', 'extenddomain','GeomProj_extenddomain_SG_spcvx700_NL-500_FrM0_FlMreal0_FC35_FT50_TS0.01_OF100_hmin350_BuH300_BuP30000_BuS40000_ByH0_ByP0_ByS0_Stallo_IF20000_MS1000000_newMassSpc_MSF100000_xdim70000_finestMesh_noMinCalv_accT177_parStart10_inH1500.nc','Transient']
-           'extenddomain':['extenddomain', 'extenddomain','GeomProj_extenddomain_SG_spcvx700_NL-500_FrM0_FlMreal0_FC35_FT50_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF20000_MS1000000_newMassSpc_MSF100000_xdim70000_finestMesh_noMinCalv_accT177_parStart10_inH1500.nc','Transient']
+           #'extenddomain':['extenddomain', 'extenddomain','GeomProj_extenddomain_SG_spcvx700_NL-500_FrM0_FlMreal0_FC35_FT50_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF20000_MS1000000_newMassSpc_MSF100000_xdim70000_finestMesh_noMinCalv_accT177_parStart10_inH1500.nc','Transient']
+           'extenddomain':['extenddomain', 'extenddomain','GeomProj_SpinUp_SG_spcvx300_NL-500_FrM200_FlMreal30_FC50_FT25_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF90000_MS1000000_newestMassSpc_MSF100000_xdim92000_fineMesh75_noMinCalv_parStart10.nc','Transient']
            }
 
 
@@ -316,7 +317,7 @@ for run in range(0,run_number):
         run_name=prefix+'_'+which_run[run_type][0]+'_SG'+'_spcvx'+str(spcvx_list[run])+'_NL'+str(params['null_level'])+'_FrM'+str(params['frontal_melt'])+'_FlMreal'+str(params['floating_melt'])+'_FC'+str(params['friction'])+'_FT'+str(params['final_time'])+'_TS'+str(params['timestepping'])+'_OF'+str(params['output_frequency'])+'_hmin'+str(params['hmin'])+'_BuH'+str(params['bump_height'])+'_BuP'+str(params['bump_pos'])+'_BuS'+str(params['bump_spread'])+'_ByH'+str(params['bay_height1'])+'_ByP'+str(params['bay_pos1'])+'_ByS'+str(params['bay_spread1'])+'_'+clusterident+'_IF'+str(params['start_icefront'])+'_MS'+str(params['max_stress'])+'_newMassSpc'+'_MSF'+str(params['max_stress_floating'])+'_xdim'+str(params['x_dim'])+'_fineMesh'+'_noMinCalv'+'_accT800'+'_parStart35'+'_inH'+str(params['influx_height'])
     elif run_type == 'extenddomain':
         load_name='../../share_setup/Models/'+which_run[run_type][2]
-        run_name=prefix+'_'+which_run[run_type][0]+'_SG'+'_spcvx'+str(spcvx_list[run])+'_NL'+str(params['null_level'])+'_FrM'+str(params['frontal_melt'])+'_FlMreal'+str(params['floating_melt'])+'_FC'+str(params['friction'])+'_FT'+str(params['final_time'])+'_TS'+str(params['timestepping'])+'_OF'+str(params['output_frequency'])+'_hmin'+str(params['hmin'])+'_BuH'+str(params['bump_height'])+'_BuP'+str(params['bump_pos'])+'_BuS'+str(params['bump_spread'])+'_ByH'+str(params['bay_height1'])+'_ByP'+str(params['bay_pos1'])+'_ByS'+str(params['bay_spread1'])+'_'+clusterident+'_IF'+str(params['start_icefront'])+'_MS'+str(params['max_stress'])+'_newMassSpc'+'_MSF'+str(params['max_stress_floating'])+'_xdim'+str(params['x_dim'])+'_finestMesh'+'_noMinCalv'+'_accT227'+'_parStart10'+'_inH'+str(params['influx_height'])
+        run_name=prefix+'_'+which_run[run_type][0]+'_SG'+'_spcvx'+str(spcvx_list[run])+'_NL'+str(params['null_level'])+'_FrM'+str(params['frontal_melt'])+'_FlMreal'+str(params['floating_melt'])+'_FC'+str(params['friction'])+'_FT'+str(params['final_time'])+'_TS'+str(params['timestepping'])+'_OF'+str(params['output_frequency'])+'_hmin'+str(params['hmin'])+'_BuH'+str(params['bump_height'])+'_BuP'+str(params['bump_pos'])+'_BuS'+str(params['bump_spread'])+'_ByH'+str(params['bay_height1'])+'_ByP'+str(params['bay_pos1'])+'_ByS'+str(params['bay_spread1'])+'_'+clusterident+'_IF'+str(params['start_icefront'])+'_MS'+str(params['max_stress'])+'_newMassSpc'+'_MSF'+str(params['max_stress_floating'])+'_xdim'+str(params['x_dim'])+'_finestMesh'+'_noMinCalv'+'_accT100'+'_parStart10'+'_inH'+str(params['influx_height'])+'_fixedfrontandnocal'
     else:
         print('run_type "{}" is not recognised possibilities are :{}'.format(run_type, which_run.keys()))
 
