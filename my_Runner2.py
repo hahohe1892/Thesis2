@@ -197,7 +197,7 @@ def extenddomain(params, run_name, load_name):
 
     md.transient.isgroundingline=1
     md.transient.isthermal=1
-    md.transient.ismovingfront=1
+    md.transient.ismovingfront=0
 
     md.timestepping.start_time=0
     md.initialization.temperature=(273.15-5.)*np.ones((md.mesh.numberofvertices))
