@@ -29,9 +29,9 @@ else:
 
 prefix = 'GeomProj'
 
-run_type='SpinUp'   
+#run_type='SpinUp'   
 #run_type='SpinUp_load' 
-#run_type='extenddomain' 
+run_type='extenddomain' 
 
 plotting='off'
 
@@ -56,19 +56,19 @@ bay_skew2=[0,0]
 slab_thickness=[2000]
 steepness=[1./300]
 min_thickness_mask=[1]
-spcvx=[300,800]
+spcvx=[800]
 hmin=[350]
 null_level=[-400]
 frontal_melt=[200]
 floating_melt=[30]
-friction=[50,20]
+friction=[50]
 start_icefront=[60000]
 max_stress=[1000000]
 max_stress_floating=[100000]
 influx_height=[-500]
 
 
-final_time=[25]
+final_time=[75]
 timestepping=[0.01]
 output_frequency=[100]
 
@@ -264,7 +264,8 @@ which_run={'SpinUp':['SpinUp', 'SpinUp', 'dummy', 'Transient'],
            #'extenddomain':['extenddomain', 'extenddomain','GeomProj_extenddomain_SG_spcvx700_NL-500_FrM0_FlMreal0_FC35_FT100_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF20000_MS1000000_newMassSpc_MSF100000_xdim70000_finestMesh_noMinCalv_accT127_parStart10_inH1500.nc','Transient']
            #'extenddomain':['extenddomain', 'extenddomain','GeomProj_extenddomain_SG_spcvx700_NL-500_FrM0_FlMreal0_FC35_FT50_TS0.01_OF100_hmin350_BuH300_BuP30000_BuS40000_ByH0_ByP0_ByS0_Stallo_IF20000_MS1000000_newMassSpc_MSF100000_xdim70000_finestMesh_noMinCalv_accT177_parStart10_inH1500.nc','Transient']
            #'extenddomain':['extenddomain', 'extenddomain','GeomProj_extenddomain_SG_spcvx700_NL-500_FrM0_FlMreal0_FC35_FT50_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF20000_MS1000000_newMassSpc_MSF100000_xdim70000_finestMesh_noMinCalv_accT177_parStart10_inH1500.nc','Transient']
-           'extenddomain':['extenddomain', 'extenddomain','GeomProj_SpinUp_SG_spcvx300_NL-500_FrM200_FlMreal30_FC50_FT25_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF90000_MS1000000_newestMassSpc_MSF100000_xdim92000_fineMesh75_noMinCalv_parStart10.nc','Transient']
+          # 'extenddomain':['extenddomain', 'extenddomain','GeomProj_SpinUp_SG_spcvx300_NL-500_FrM200_FlMreal30_FC50_FT25_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF90000_MS1000000_newestMassSpc_MSF100000_xdim92000_fineMesh75_noMinCalv_parStart10.nc','Transient']
+           'extenddomain':['extenddomain', 'extenddomain','GeomProj_SpinUp_SG_spcvx800_NL-400_FrM200_FlMreal30_FC50_FT25_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF60000_MS1000000_newestMassSpc_MSF100000_xdim62000_fineMesh75_noMinCalv_parStart2.nc','Transient']
            }
 
 
