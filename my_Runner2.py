@@ -50,7 +50,7 @@ def SpinUp(params, run_name, load_name):
     md.geometry.surface=md.geometry.bed+1
     surface_pos=np.where(md.mesh.x<=start_icefront)
     #md.geometry.surface[surface_pos]=slab_thickness+null_level+md.mesh.x[surface_pos]*slope
-    md.geometry.surface[surface_pos]=np.sqrt(10*(start_icefront-md.mesh.x[surface_pos]))-null_level+150+md.mesh.x[surface_pos]*slope
+    md.geometry.surface[surface_pos]=np.sqrt(2*(start_icefront-md.mesh.x[surface_pos]))-null_level+150+md.mesh.x[surface_pos]*slope
 
     below_pos=np.where(md.geometry.surface<md.geometry.bed+1)
     md.geometry.surface[below_pos]=md.geometry.bed[below_pos]+1
@@ -104,6 +104,7 @@ def SpinUp(params, run_name, load_name):
     md.calving.stress_threshold_floatingice=params['max_stress_floating'] 
 
     thk_dif=(dc+params['influx_height']+params['null_level'])*np.ones(len(md.mesh.x[np.where(md.mesh.x==0)]))-md.geometry.base[np.where(md.mesh.x<5)]
+    thk_dif[np.where(thk_dif<0)]=1
     md.masstransport.spcthickness[np.where(md.mesh.x<5)]=thk_dif
     md.geometry.thickness[np.where(md.mesh.x<5)]=md.masstransport.spcthickness[np.where(md.mesh.x<5)]
     md.geometry.surface[np.where(md.mesh.x<5)]=md.geometry.base[np.where(md.mesh.x<5)]+md.geometry.thickness[np.where(md.mesh.x<5)]
@@ -144,7 +145,7 @@ def SpinUp_load(params, run_name, load_name):
     return md
 
 def extenddomain(params, run_name, load_name):
-    restart_time=25
+    restart_time=50
     y_dim, x_dim, slope, dc, gap_halfwidth, step = standardvalues()
     start_icefront=params['start_icefront']
     slab_thickness=params['slab_thickness']
@@ -164,7 +165,7 @@ def extenddomain(params, run_name, load_name):
     old_mesh_geometry=md.geometry.bed
     h=np.nan*np.ones(md.mesh.numberofvertices)
     #h[np.where(np.logical_and(np.logical_and(md.mesh.y<17800, md.mesh.y>12200), np.logical_and(md.mesh.x<65000, md.mesh.x>20000)))]=100  #25000
-    h[np.where(np.logical_and(md.geometry.bed<1200, np.logical_and(md.mesh.x<70000, md.mesh.x>40000)))]=100
+    h[np.where(np.logical_and(md.geometry.bed<1200, np.logical_and(md.mesh.x<92000, md.mesh.x>40000)))]=100
     
     md=bamg(md, 'field', old_mesh_geometry, 'hmax', 1000, 'hmin', params['hmin'], 'gradation', 1.7, 'hVertices', h)
     md.miscellaneous.name=run_name
@@ -193,11 +194,11 @@ def extenddomain(params, run_name, load_name):
 
     ## Parameterization
     md.smb.mass_balance=np.zeros(md.mesh.numberofvertices)
-    #md.calving=calvingvonmises()
+    md.calving=calvingvonmises()
 
     md.transient.isgroundingline=1
     md.transient.isthermal=1
-    md.transient.ismovingfront=0
+    md.transient.ismovingfront=1
 
     md.timestepping.start_time=0
     md.initialization.temperature=(273.15-5.)*np.ones((md.mesh.numberofvertices))
