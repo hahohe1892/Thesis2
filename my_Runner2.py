@@ -50,7 +50,7 @@ def SpinUp(params, run_name, load_name):
     md.geometry.surface=md.geometry.bed+1
     surface_pos=np.where(md.mesh.x<=start_icefront)
     #md.geometry.surface[surface_pos]=slab_thickness+null_level+md.mesh.x[surface_pos]*slope
-    md.geometry.surface[surface_pos]=np.sqrt(2*(start_icefront-md.mesh.x[surface_pos]))-null_level+150+md.mesh.x[surface_pos]*slope
+    md.geometry.surface[surface_pos]=np.sqrt((start_icefront-md.mesh.x[surface_pos]))+100
 
     below_pos=np.where(md.geometry.surface<md.geometry.bed+1)
     md.geometry.surface[below_pos]=md.geometry.bed[below_pos]+1
@@ -165,7 +165,7 @@ def extenddomain(params, run_name, load_name):
     old_mesh_geometry=md.geometry.bed
     h=np.nan*np.ones(md.mesh.numberofvertices)
     #h[np.where(np.logical_and(np.logical_and(md.mesh.y<17800, md.mesh.y>12200), np.logical_and(md.mesh.x<65000, md.mesh.x>20000)))]=100  #25000
-    h[np.where(np.logical_and(md.geometry.bed<1200, np.logical_and(md.mesh.x<65000, md.mesh.x>20000)))]=100
+    h[np.where(np.logical_and(md.geometry.bed<1200, np.logical_and(md.mesh.x<92000, md.mesh.x>40000)))]=100
     
     md=bamg(md, 'field', old_mesh_geometry, 'hmax', 1000, 'hmin', params['hmin'], 'gradation', 1.7, 'hVertices', h)
     md.miscellaneous.name=run_name
