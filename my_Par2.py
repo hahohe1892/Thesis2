@@ -9,7 +9,7 @@ from cuffey import *
 ## SMB
 
 md.smb.mass_balance=np.zeros(md.mesh.numberofvertices)
-md.calving=calvingvonmises()
+#md.calving=calvingvonmises()
 #md.levelset.spclevelset=np.nan*np.ones(md.mesh.numberofvertices)
 #md.frontalforcings.meltingrate=np.zeros(md.mesh.numberofvertices)
 
@@ -17,7 +17,8 @@ md.calving=calvingvonmises()
 
 md.transient.isgroundingline=1
 md.transient.isthermal=1
-md.transient.ismovingfront=1
+md.transient.ismovingfront=0
+md.transient.issmb=0
 
 ## Constants
 md.initialization.pressure=md.materials.rho_ice*md.constants.g*md.geometry.thickness
