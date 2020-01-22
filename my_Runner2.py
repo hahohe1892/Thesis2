@@ -165,7 +165,7 @@ def extenddomain(params, run_name, load_name):
     old_mesh_geometry=md.geometry.bed
     h=np.nan*np.ones(md.mesh.numberofvertices)
     #h[np.where(np.logical_and(np.logical_and(md.mesh.y<17800, md.mesh.y>12200), np.logical_and(md.mesh.x<65000, md.mesh.x>20000)))]=100  #25000
-    h[np.where(np.logical_and(md.geometry.bed<1200, np.logical_and(md.mesh.x<35000, md.mesh.x>10000)))]=100
+    h[np.where(np.logical_and(md.geometry.bed<1200, np.logical_and(md.mesh.x<67000, md.mesh.x>25000)))]=100
     
     md=bamg(md, 'field', old_mesh_geometry, 'hmax', 1000, 'hmin', params['hmin'], 'gradation', 1.7, 'hVertices', h)
     md.miscellaneous.name=run_name
@@ -266,7 +266,8 @@ def extenddomain(params, run_name, load_name):
     md.geometry.surface[np.where(md.mesh.x<5)]=md.geometry.base[np.where(md.mesh.x<5)]+md.geometry.thickness[np.where(md.mesh.x<5)]
 
     md=adddis(md, params)
-    
+    #md.geometry.surface[np.where(md.geometry.thickness<0)]=md.geometry.bed[np.where(md.geometry.thickness<0)]+1
+    #md.geometry.thickness[np.where(md.geometry.thickness<0)]=1
     return md
 
 
