@@ -38,7 +38,7 @@ plotting='off'
 ## Reference parameters
 y_dim, x_dim, slope, dc, gap_halfwidth, step = standardvalues()
 
-bump_height=[-300]#150, 300, -33]
+bump_height=[300]#150, 300, -33]
 bump_spread=[30000]#31250, 13750, 40000]
 bump_pos=[30000]#30000,40000,30000]
 bump_skew=[0]#0,0]
