@@ -64,7 +64,7 @@ floating_melt=[30]
 friction=[40]
 start_icefront=[60000]
 max_stress=[1000000]
-max_stress_floating=[100000,200000,300000]
+max_stress_floating=[150000,200000,300000]
 influx_height=[0]
 
 
