@@ -165,7 +165,7 @@ def extenddomain(params, run_name, load_name):
     old_mesh_geometry=md.geometry.bed
     h=np.nan*np.ones(md.mesh.numberofvertices)
     #h[np.where(np.logical_and(np.logical_and(md.mesh.y<17800, md.mesh.y>12200), np.logical_and(md.mesh.x<65000, md.mesh.x>20000)))]=100  #25000
-    h[np.where(np.logical_and(md.geometry.bed<1200, np.logical_and(md.mesh.x<36000, md.mesh.x>10000)))]=100
+    h[np.where(np.logical_and(md.geometry.bed<1200, np.logical_and(md.mesh.x<65000, md.mesh.x>20000)))]=100
     
     md=bamg(md, 'field', old_mesh_geometry, 'hmax', 1000, 'hmin', params['hmin'], 'gradation', 1.7, 'hVertices', h)
     md.miscellaneous.name=run_name
@@ -220,6 +220,7 @@ def extenddomain(params, run_name, load_name):
     ##cutoff
     #md.mask.ice_levelset[np.where(md.mesh.x>90000)]=1
     #md.mask.ice_levelset[np.where(md.geometry.bed>1)]=-1
+    md.mask.ice_levelset[np.where(md.mask.groundedice_levelset<0)]=1
     ##
     
     md.friction.coefficient=params['friction']*np.ones(md.mesh.numberofvertices)
