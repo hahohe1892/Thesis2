@@ -38,25 +38,25 @@ plotting='off'
 ## Reference parameters
 y_dim, x_dim, slope, dc, gap_halfwidth, step = standardvalues()
 
-bump_height=[330,0,330]#150, 300, -33]
-bump_spread=[25000,0,25000]#31250, 13750, 40000]
-bump_pos=[32500,0,32500]#30000,40000,30000]
-bump_skew=[0,0,0]#0,0]
+bump_height=[0,330]#150, 300, -33]
+bump_spread=[0,25000]#31250, 13750, 40000]
+bump_pos=[0,32500]#30000,40000,30000]
+bump_skew=[0,0]#0,0]
 
-bay_height1=[3000,3000,0]
-bay_spread1=[20000,20000,0]
-bay_pos1=[32500,32500,0]
-bay_skew1=[0,0,0]
+bay_height1=[3000,0]
+bay_spread1=[20000,0]
+bay_pos1=[32500,0]
+bay_skew1=[0,0]
 
-bay_height2=[3000,3000,0]
-bay_spread2=[20000,20000,0]
-bay_pos2=[32500,32500,0]
-bay_skew2=[0,0,0]
+bay_height2=[3000,0]
+bay_spread2=[20000,0]
+bay_pos2=[32500,0]
+bay_skew2=[0,0]
 
 slab_thickness=[2000]
 steepness=[1./300]
 min_thickness_mask=[1]
-spcvx=[800]
+spcvx=[900,1000]
 hmin=[350]
 null_level=[-500]
 frontal_melt=[200]
