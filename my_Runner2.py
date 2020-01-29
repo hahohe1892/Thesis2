@@ -183,7 +183,6 @@ def extenddomain(params, run_name, load_name):
     md.geometry.surface[np.where(md.geometry.surface<md.geometry.bed)]=md.geometry.bed[np.where(md.geometry.surface<md.geometry.bed)]+1
     md.geometry.base[np.where(md.mask.groundedice_levelset>0)]=md.geometry.bed[np.where(md.mask.groundedice_levelset>0)]
     md.geometry.thickness[np.where(md.mask.groundedice_levelset>0)]=md.geometry.surface[np.where(md.mask.groundedice_levelset>0)]-md.geometry.base[np.where(md.mask.groundedice_levelset>0)]
-    md.geometry.thickness[np.where(md.geometry.surface-md.geometry.base!=md.geometry.thickness)]=md.geometry.surface[np.where(md.geometry.surface-md.geometry.base!=md.geometry.thickness)]-md.geometry.base[np.where(md.geometry.surface-md.geometry.base!=md.geometry.thickness)]
 
     deep=np.where(md.geometry.base<md.geometry.bed)
     md.geometry.base[deep]=md.geometry.bed[deep]
@@ -266,7 +265,7 @@ def extenddomain(params, run_name, load_name):
     md.geometry.thickness[np.where(md.mesh.x<5)]=md.masstransport.spcthickness[np.where(md.mesh.x<5)]
     md.geometry.surface[np.where(md.mesh.x<5)]=md.geometry.base[np.where(md.mesh.x<5)]+md.geometry.thickness[np.where(md.mesh.x<5)]
 
-#    md=adddis(md, params)
+    md=adddis(md, params)
     
     return md
 
