@@ -165,7 +165,7 @@ def extenddomain(params, run_name, load_name):
     old_mesh_geometry=md.geometry.bed
     h=np.nan*np.ones(md.mesh.numberofvertices)
     #h[np.where(np.logical_and(np.logical_and(md.mesh.y<17800, md.mesh.y>12200), np.logical_and(md.mesh.x<65000, md.mesh.x>20000)))]=100  #25000
-    h[np.where(np.logical_and(md.geometry.bed<1200, np.logical_and(md.mesh.x<65000, md.mesh.x>40000)))]=100
+    h[np.where(np.logical_and(md.geometry.bed<1200, np.logical_and(md.mesh.x<65000, md.mesh.x>30000)))]=100
     
     md=bamg(md, 'field', old_mesh_geometry, 'hmax', 1000, 'hmin', params['hmin'], 'gradation', 1.7, 'hVertices', h)
     md.miscellaneous.name=run_name
@@ -198,7 +198,7 @@ def extenddomain(params, run_name, load_name):
 
     md.transient.isgroundingline=1
     md.transient.isthermal=1
-    md.transient.ismovingfront=0
+    md.transient.ismovingfront=1
 
     md.timestepping.start_time=0
     md.initialization.temperature=(273.15-5.)*np.ones((md.mesh.numberofvertices))
