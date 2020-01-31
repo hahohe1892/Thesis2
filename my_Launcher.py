@@ -43,14 +43,14 @@ bump_spread=[22000]#31250, 13750, 40000]
 bump_pos=[32500]#30000,40000,30000]
 bump_skew=[0]#0,0]
 
-bay_height1=[1000]
-bay_spread1=[20000]
-bay_pos1=[32500]
+bay_height1=[0]
+bay_spread1=[0]
+bay_pos1=[0]
 bay_skew1=[0]
 
-bay_height2=[1000]
-bay_spread2=[20000]
-bay_pos2=[32500]
+bay_height2=[0]
+bay_spread2=[0]
+bay_pos2=[0]
 bay_skew2=[0]
 
 slab_thickness=[2000]
@@ -267,7 +267,7 @@ which_run={'SpinUp':['SpinUp', 'SpinUp', 'dummy', 'Transient'],
            #'extenddomain':['extenddomain', 'extenddomain','GeomProj_SpinUp_SG_spcvx300_NL-500_FrM200_FlMreal30_FC50_FT25_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF90000_MS1000000_newestMassSpc_MSF100000_xdim92000_fineMesh75_noMinCalv_parStart10.nc','Transient']
            #'extenddomain':['extenddomain', 'extenddomain','GeomProj_SpinUp_SG_spcvx800_NL-500_FrM200_FlMreal30_FC40_FT125_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF60000_MS1000000_newestMassSpc_MSF100000_xdim62000_fineMesh75_noMinCalv_parStart2.nc','Transient']
           # 'extenddomain':['extenddomain', 'extenddomain','GeomProj_extenddomain_SG_spcvx800_NL-500_FrM200_FlMreal30_FC40_FT50_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF60000_MS1000000_newMassSpc_MSF200000_xdim65000_finestMesh_noMinCalv_accT175_parStart10_inH0_fixedfrontandnocal.nc','Transient']
-            'extenddomain':['extenddomain', 'extenddomain','GeomProj_extenddomain_SG_spcvx800_NL-500_FrM200_FlMreal30_FC40_FT50_TS0.01_OF100_hmin350_BuH180_BuP32500_BuS22000_ByH1000_ByP32500_ByS20000_Stallo_IF60000_MS1000000_newMassSpc_MSF200000_xdim65000_finestMesh_noMinCalv_accT225_parStart10_inH0.nc','Transient']
+            'extenddomain':['extenddomain', 'extenddomain','GeomProj_extenddomain_SG_spcvx800_NL-500_FrM200_FlMreal30_FC40_FT50_TS0.01_OF100_hmin350_BuH180_BuP32500_BuS22000_ByH0_ByP0_ByS0_Stallo_IF60000_MS1000000_newMassSpc_MSF200000_xdim65000_finestMesh_noMinCalv_accT225_parStart10_inH0.nc','Transient']
            }
 
 
