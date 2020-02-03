@@ -36,7 +36,7 @@ def SpinUp(params, run_name, load_name):
     old_mesh_geometry=md.geometry.bed
     
     h=np.nan*np.ones(md.mesh.numberofvertices)
-    h[np.where(np.logical_and(np.logical_and(md.mesh.y<17800, md.mesh.y>12200), np.logical_and(md.mesh.x<62000, md.mesh.x>40000)))]=100
+    h[np.where(np.logical_and(np.logical_and(md.mesh.y<17800, md.mesh.y>12200), np.logical_and(md.mesh.x<65000, md.mesh.x>30000)))]=100
     #h[np.where(np.logical_and(md.geometry.bed<1200, np.logical_and(md.mesh.x<50000, md.mesh.x>18000)))]=100
 
     md=bamg(md, 'field', old_mesh_geometry, 'hmax', 2000, 'hmin', params['hmin'], 'gradation', 1.5, 'hVertices', h)
