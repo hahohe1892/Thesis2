@@ -145,7 +145,7 @@ def SpinUp_load(params, run_name, load_name):
     return md
 
 def extenddomain(params, run_name, load_name):
-    restart_time=125
+    restart_time=25
     y_dim, x_dim, slope, dc, gap_halfwidth, step = standardvalues()
     start_icefront=params['start_icefront']
     slab_thickness=params['slab_thickness']
@@ -194,11 +194,11 @@ def extenddomain(params, run_name, load_name):
 
     ## Parameterization
     md.smb.mass_balance=np.zeros(md.mesh.numberofvertices)
-    md.calving=calvingvonmises()
+    #md.calving=calvingvonmises()
 
     md.transient.isgroundingline=1
     md.transient.isthermal=1
-    md.transient.ismovingfront=1
+    md.transient.ismovingfront=0
 
     md.timestepping.start_time=0
     md.initialization.temperature=(273.15-5.)*np.ones((md.mesh.numberofvertices))
