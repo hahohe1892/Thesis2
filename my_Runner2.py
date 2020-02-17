@@ -118,7 +118,7 @@ def SpinUp(params, run_name, load_name):
 
 def SpinUp_load(params, run_name, load_name):
 
-    restart_time=20
+    restart_time=50
     y_dim, x_dim, slope, dc, gap_halfwidth, step = standardvalues()
     x_dim=params['x_dim']
     
@@ -137,10 +137,11 @@ def SpinUp_load(params, run_name, load_name):
     md.calving.stress_threshold_groundedice=params['max_stress']
     md.calving.stress_threshold_floatingice=params['max_stress_floating'] 
     md.friction.coefficient=params['friction']*np.ones(md.mesh.numberofvertices)
-    thk_dif=(dc+params['influx_height']+params['null_level'])*np.ones(len(md.mesh.x[np.where(md.mesh.x<5)]))-md.geometry.base[np.where(md.mesh.x<5)]
-    md.masstransport.spcthickness[np.where(md.mesh.x<5)]=thk_dif
-    md.geometry.thickness[np.where(md.mesh.x<5)]=md.masstransport.spcthickness[np.where(md.mesh.x<5)]
-    md.geometry.surface[np.where(md.mesh.x<5)]=md.geometry.base[np.where(md.mesh.x<5)]+md.geometry.thickness[np.where(md.mesh.x<5)]
+    #thk_dif=(dc+params['influx_height']+params['null_level'])*np.ones(len(md.mesh.x[np.where(md.mesh.x<5)]))-md.geometry.base[np.where(md.mesh.x<5)]
+    #md.masstransport.spcthickness[np.where(md.mesh.x<5)]=thk_dif
+    #md.geometry.thickness[np.where(md.mesh.x<5)]=md.masstransport.spcthickness[np.where(md.mesh.x<5)]
+    #md.geometry.surface[np.where(md.mesh.x<5)]=md.geometry.base[np.where(md.mesh.x<5)]+md.geometry.thickness[np.where(md.mesh.x<5)]
+    md.masstransport.spcthickness=np.nan*np.ones(md.mesh.numberofvertices)
     
     return md
 
