@@ -142,6 +142,11 @@ def SpinUp_load(params, run_name, load_name):
     #md.geometry.thickness[np.where(md.mesh.x<5)]=md.masstransport.spcthickness[np.where(md.mesh.x<5)]
     #md.geometry.surface[np.where(md.mesh.x<5)]=md.geometry.base[np.where(md.mesh.x<5)]+md.geometry.thickness[np.where(md.mesh.x<5)]
     md.masstransport.spcthickness=np.nan*np.ones(md.mesh.numberofvertices)
+    md.geometry.surface[np.where(md.mesh.x<3000)]=np.mean(md.geometry.surface[np.where(np.logical_and(md.mesh.x<3500, md.mesh.x>3000))])
+    md.geometry.thickness=md.geometry.surface-md.geometry.base
+    md.initialization.vx[np.where(md.mesh.x==0)]=params['spcvx']
+    md.transient.isgroundingline=0
+    md.transient.ismovingfront=0
     
     return md
 
