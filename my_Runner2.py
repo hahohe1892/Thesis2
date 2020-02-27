@@ -133,7 +133,8 @@ def SpinUp_load(params, run_name, load_name):
 
     md.frontalforcings.meltingrate=params['frontal_melt']*np.ones(md.mesh.numberofvertices)
     md.basalforcings.floatingice_melting_rate=params['floating_melt']*np.ones(md.mesh.numberofvertices)
-    md.stressbalance.spcvx[np.where(md.mesh.x<5)]=params['spcvx']
+    #md.stressbalance.spcvx[np.where(md.mesh.x<5)]=params['spcvx']
+    md.stressbalance.spcvx[np.where(md.mesh.x<5)]=md.geometry.bed[np.where(md.mesh.x<5)]*(-1/3)+params['spcvx']
     md.calving.stress_threshold_groundedice=params['max_stress']
     md.calving.stress_threshold_floatingice=params['max_stress_floating'] 
     md.friction.coefficient=params['friction']*np.ones(md.mesh.numberofvertices)
@@ -144,7 +145,7 @@ def SpinUp_load(params, run_name, load_name):
     md.masstransport.spcthickness=np.nan*np.ones(md.mesh.numberofvertices)
     md.geometry.surface[np.where(md.mesh.x<3000)]=np.mean(md.geometry.surface[np.where(np.logical_and(md.mesh.x<3500, md.mesh.x>3000))])
     md.geometry.thickness=md.geometry.surface-md.geometry.base
-    md.initialization.vx[np.where(md.mesh.x==0)]=params['spcvx']
+    md.initialization.vx[np.where(md.mesh.x==0)]=md.stressbalance.spcvx[np.where(md.mesh.x==0)]
     md.transient.isgroundingline=1
     md.transient.ismovingfront=0
     
