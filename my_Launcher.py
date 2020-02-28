@@ -56,7 +56,7 @@ bay_skew2=[0]
 slab_thickness=[2000]
 steepness=[1./300]
 min_thickness_mask=[1]
-spcvx=[500]
+spcvx=[550,600,650]
 hmin=[350]
 null_level=[-500]
 frontal_melt=[200]
@@ -68,7 +68,7 @@ max_stress_floating=[255000]
 influx_height=[0]
 
 
-final_time=[50]
+final_time=[100]
 timestepping=[0.01]
 output_frequency=[100]
 
