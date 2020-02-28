@@ -272,7 +272,7 @@ def extenddomain(params, run_name, load_name):
 
 def insertatinflux(params, run_name, load_name, fixfront):
     restart_time=50
-    inpos=10000
+    inpos=20000
     y_dim, x_dim, slope, dc, gap_halfwidth, step = standardvalues()
     start_icefront=params['start_icefront']
     slab_thickness=params['slab_thickness']
@@ -304,7 +304,8 @@ def insertatinflux(params, run_name, load_name, fixfront):
 
     md.geometry.thickness=2000*np.ones(md.mesh.numberofvertices)
     md.geometry.thickness[insert_over]=InterpFromMeshToMesh2d(md2.mesh.elements, md2.mesh.x+inpos, md2.mesh.y, md2.results.TransientSolution[restart_time].Thickness, md.mesh.x[insert_over], md.mesh.y[insert_over])[0][:,0]
-    md.geometry.thickness[insert_under]=InterpFromMeshToMesh2d(md2.mesh.elements, md2.mesh.x, md2.mesh.y, md2.results.TransientSolution[restart_time].Thickness, md.mesh.x[insert_under], md.mesh.y[insert_under])[0][:,0]
+    #md.geometry.thickness[insert_under]=InterpFromMeshToMesh2d(md2.mesh.elements, md2.mesh.x, md2.mesh.y, md2.results.TransientSolution[restart_time].Thickness, md.mesh.x[insert_under], md.mesh.y[insert_under])[0][:,0]
+    #md.geometry.thickness[insert_under]=np.mean(md2.results.TransientSolution[restart_time].Thickness[np.where(np.logical_and(md2.mesh.x<1000, np.logical_and(md2.mesh.y<17000, md2.mesh.y>13000)))])
 
     md.mask.groundedice_levelset=np.ones(md.mesh.numberofvertices)
     md.mask.groundedice_levelset[insert_over]=InterpFromMeshToMesh2d(md2.mesh.elements, md2.mesh.x+inpos, md2.mesh.y, md2.results.TransientSolution[restart_time].MaskGroundediceLevelset, md.mesh.x[insert_over], md.mesh.y[insert_over])[0][:,0]
@@ -320,7 +321,9 @@ def insertatinflux(params, run_name, load_name, fixfront):
 
     md.geometry.surface=2000*np.ones(md.mesh.numberofvertices)
     md.geometry.surface[insert_over]=InterpFromMeshToMesh2d(md2.mesh.elements, md2.mesh.x+inpos, md2.mesh.y, md2.results.TransientSolution[restart_time].Surface, md.mesh.x[insert_over], md.mesh.y[insert_over])[0][:,0]
-    md.geometry.surface[insert_under]=InterpFromMeshToMesh2d(md2.mesh.elements, md2.mesh.x, md2.mesh.y, md2.results.TransientSolution[restart_time].Surface, md.mesh.x[insert_under], md.mesh.y[insert_under])[0][:,0]
+    #md.geometry.surface[insert_under]=InterpFromMeshToMesh2d(md2.mesh.elements, md2.mesh.x, md2.mesh.y, md2.results.TransientSolution[restart_time].Surface, md.mesh.x[insert_under], md.mesh.y[insert_under])[0][:,0]
+    md.geometry.surface[insert_under]=np.mean(md2.results.TransientSolution[restart_time].Surface[np.where(np.logical_and(md2.mesh.x<1000, np.logical_and(md2.mesh.y<17000, md2.mesh.y>13000)))])
+
     md.geometry.surface[np.where(md.geometry.surface<md.geometry.bed)]=md.geometry.bed[np.where(md.geometry.surface<md.geometry.bed)]+1
     md.geometry.base[np.where(md.mask.groundedice_levelset>0)]=md.geometry.bed[np.where(md.mask.groundedice_levelset>0)]
     md.geometry.thickness[np.where(md.mask.groundedice_levelset>0)]=md.geometry.surface[np.where(md.mask.groundedice_levelset>0)]-md.geometry.base[np.where(md.mask.groundedice_levelset>0)]
@@ -335,7 +338,7 @@ def insertatinflux(params, run_name, load_name, fixfront):
     md.initialization.vy[insert_over]=InterpFromMeshToMesh2d(md2.mesh.elements, md2.mesh.x+inpos, md2.mesh.y, md2.results.TransientSolution[restart_time].Vy, md.mesh.x[insert_over], md.mesh.y[insert_over])[0][:,0]
 
     md.smb.mass_balance=np.zeros(md.mesh.numberofvertices)
-    md.smb.mass_balance[insert_under]=params['smb']
+    md.smb.mass_balance[np.where(md.mesh.x<10000)]=params['smb']
     md.calving=calvingvonmises()
 
     md.transient.isgroundingline=1

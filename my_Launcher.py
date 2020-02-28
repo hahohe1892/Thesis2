@@ -80,7 +80,7 @@ final_time=[5]
 timestepping=[0.01]
 output_frequency=[50]
 
-x_dim=[75000]
+x_dim=[85000]
 ## define parameters lists
 
 bump_height_list=[]
