@@ -59,7 +59,7 @@ bay_skew2=[0,0]
 smb_pos=[30000]
 funnel=[300]
 
-smb=[20,30,50]
+smb=[60]
 slab_thickness=[2000]
 steepness=[1./300]
 min_thickness_mask=[1]
