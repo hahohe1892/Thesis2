@@ -18,8 +18,8 @@ clustername = 'Stallo'
 
 if clustername == 'Stallo':
     clusterident='Stallo'
-    #cluster = stallo('numnodes', 1, 'cpuspernode', 16, 'time', 4 * 60, 'queue', 'devel')  # time in minutes
-    cluster = stallo('numnodes', 1, 'cpuspernode', 16, 'mem', 1.9, 'time', 10 * 60)  #time in minutes
+    cluster = stallo('numnodes', 1, 'cpuspernode', 16, 'time', 4 * 60, 'queue', 'devel')  # time in minutes
+    #cluster = stallo('numnodes', 1, 'cpuspernode', 16, 'mem', 1.9, 'time', 10 * 60)  #time in minutes
     #cluster = stallo('numnodes', 1, 'cpuspernode', 16, 'mem', 1.9, 'time', 10 * 60)  #time in minutes
 else:
     #cluster = generic('name', clustername, 'np', 1, 'valgrind', '/usr/bin/valgrind', 'valgrindlib', '/usr/lib/valgrind/libmpiwrap-amd64-linux.so')
@@ -29,51 +29,58 @@ else:
 
 prefix = 'GeomProj'
 
-run_type='SpinUp'   
+#run_type='SpinUp'   
 #run_type='SpinUp_load' 
 #run_type='extenddomain' 
+run_type='insertatinflux'
 
 plotting='off'
 
 ## Reference parameters
 y_dim, x_dim, slope, dc, gap_halfwidth, step = standardvalues()
 
-bump_height=[0,0]#150, 300, -33]
-bump_spread=[0,0]#31250, 13750, 40000]
-bump_pos=[0,0]#30000,40000,30000]
-bump_skew=[0,0]#0,0]
+fixfront=True
 
-bay_height1=[1000,2000]
-bay_spread1=[20000,20000]
-bay_pos1=[32500,32500]
+bump_height=[0]#150, 300, -33]
+bump_spread=[0]#31250, 13750, 40000]
+bump_pos=[0]#30000,40000,30000]
+bump_skew=[0]#0,0]
+
+bay_height1=[0,0]
+bay_spread1=[0,0]
+bay_pos1=[0,0]
 bay_skew1=[0,0]
 
-bay_height2=[1000,2000]
-bay_spread2=[20000,20000]
-bay_pos2=[32500,32500]
+bay_height2=[0,0]
+bay_spread2=[0,0]
+bay_pos2=[0,0]
 bay_skew2=[0,0]
 
+smb_pos=[30000]
+funnel=[300]
+
+smb=[20]
 slab_thickness=[2000]
 steepness=[1./300]
 min_thickness_mask=[1]
-spcvx=[800]
+spcvx=[50]
 hmin=[350]
-null_level=[-500]
+null_level=[-450]
 frontal_melt=[200]
 floating_melt=[30]
 friction=[40]
 start_icefront=[60000]
 max_stress=[1000000]
-max_stress_floating=[100000]
+max_stress_floating=[200000]
 influx_height=[0]
 
 
-final_time=[125]
+
+final_time=[5]
 timestepping=[0.01]
-output_frequency=[100]
+output_frequency=[50]
 
-x_dim=[62000]
-
+x_dim=[75000]
 ## define parameters lists
 
 bump_height_list=[]
@@ -91,6 +98,10 @@ bay_spread2_list=[]
 bay_pos2_list=[]
 bay_skew2_list=[]
 
+smb_pos_list=[]
+funnel_list=[]
+
+smb_list=[]
 slab_thickness_list=[]
 steepness_list=[]
 min_thickness_mask_list=[]
@@ -128,35 +139,41 @@ for i, bump_height_val in enumerate(bump_height):
                                                         for max_stress_floating_val in max_stress_floating:
                                                             for x_dim_val in x_dim:
                                                                 for influx_height_val in influx_height:
-                                                                    bump_height_list+=[bump_height_val]
-                                                                    bump_spread_list+=[bump_spread[i]]
-                                                                    bump_pos_list+=[bump_pos[i]]
-                                                                    bump_skew_list+=[bump_skew[i]]
-                                                                    bay_height1_list+=[bay_height1[i]]
-                                                                    bay_spread1_list+=[bay_spread1[i]]
-                                                                    bay_pos1_list+=[bay_pos1[i]]
-                                                                    bay_skew1_list+=[bay_skew1[i]]
-                                                                    bay_height2_list+=[bay_height2[i]]
-                                                                    bay_spread2_list+=[bay_spread2[i]]
-                                                                    bay_pos2_list+=[bay_pos2[i]]
-                                                                    bay_skew2_list+=[bay_skew2[i]]
-                                                                    slab_thickness_list+=[slab_thickness_val]
-                                                                    steepness_list+=[steepness_val]
-                                                                    min_thickness_mask_list+=[min_thickness_mask_val]
-                                                                    spcvx_list+=[spcvx_val]
-                                                                    hmin_list+=[hmin_val]
-                                                                    final_time_list+=[final_time_val]
-                                                                    timestepping_list+=[timestepping_val]
-                                                                    output_frequency_list+=[output_frequency_val]
-                                                                    null_level_list+=[null_level_val]
-                                                                    frontal_melt_list+=[frontal_melt_val]
-                                                                    floating_melt_list+=[floating_melt[r]]
-                                                                    friction_list+=[friction_val]
-                                                                    start_icefront_list+=[start_icefront_val]
-                                                                    max_stress_list+=[max_stress_val]
-                                                                    max_stress_floating_list+=[max_stress_floating_val]
-                                                                    x_dim_list+=[x_dim_val]
-                                                                    influx_height_list+=[influx_height_val]
+                                                                    for smb_pos_val in smb_pos:
+                                                                        for funnel_val in funnel:
+                                                                            for smb_val in smb:
+                                                                                bump_height_list+=[bump_height_val]
+                                                                                bump_spread_list+=[bump_spread[i]]
+                                                                                bump_pos_list+=[bump_pos[i]]
+                                                                                bump_skew_list+=[bump_skew[i]]
+                                                                                bay_height1_list+=[bay_height1[i]]
+                                                                                bay_spread1_list+=[bay_spread1[i]]
+                                                                                bay_pos1_list+=[bay_pos1[i]]
+                                                                                bay_skew1_list+=[bay_skew1[i]]
+                                                                                bay_height2_list+=[bay_height2[i]]
+                                                                                bay_spread2_list+=[bay_spread2[i]]
+                                                                                bay_pos2_list+=[bay_pos2[i]]
+                                                                                bay_skew2_list+=[bay_skew2[i]]
+                                                                                slab_thickness_list+=[slab_thickness_val]
+                                                                                steepness_list+=[steepness_val]
+                                                                                min_thickness_mask_list+=[min_thickness_mask_val]
+                                                                                spcvx_list+=[spcvx_val]
+                                                                                hmin_list+=[hmin_val]
+                                                                                final_time_list+=[final_time_val]
+                                                                                timestepping_list+=[timestepping_val]
+                                                                                output_frequency_list+=[output_frequency_val]
+                                                                                null_level_list+=[null_level_val]
+                                                                                frontal_melt_list+=[frontal_melt_val]
+                                                                                floating_melt_list+=[floating_melt[r]]
+                                                                                friction_list+=[friction_val]
+                                                                                start_icefront_list+=[start_icefront_val]
+                                                                                max_stress_list+=[max_stress_val]
+                                                                                max_stress_floating_list+=[max_stress_floating_val]
+                                                                                x_dim_list+=[x_dim_val]
+                                                                                influx_height_list+=[influx_height_val]
+                                                                                smb_pos_list+=[smb_val]
+                                                                                funnel_list+=[funnel_val]
+                                                                                smb_list+=[smb_val]
 
 run_number=len(bump_height_list)
  
@@ -264,7 +281,10 @@ which_run={'SpinUp':['SpinUp', 'SpinUp', 'dummy', 'Transient'],
            #'extenddomain':['extenddomain', 'extenddomain','GeomProj_extenddomain_SG_spcvx700_NL-500_FrM0_FlMreal0_FC35_FT100_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF20000_MS1000000_newMassSpc_MSF100000_xdim70000_finestMesh_noMinCalv_accT127_parStart10_inH1500.nc','Transient']
            #'extenddomain':['extenddomain', 'extenddomain','GeomProj_extenddomain_SG_spcvx700_NL-500_FrM0_FlMreal0_FC35_FT50_TS0.01_OF100_hmin350_BuH300_BuP30000_BuS40000_ByH0_ByP0_ByS0_Stallo_IF20000_MS1000000_newMassSpc_MSF100000_xdim70000_finestMesh_noMinCalv_accT177_parStart10_inH1500.nc','Transient']
            #'extenddomain':['extenddomain', 'extenddomain','GeomProj_extenddomain_SG_spcvx700_NL-500_FrM0_FlMreal0_FC35_FT50_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF20000_MS1000000_newMassSpc_MSF100000_xdim70000_finestMesh_noMinCalv_accT177_parStart10_inH1500.nc','Transient']
-           'extenddomain':['extenddomain', 'extenddomain','GeomProj_SpinUp_SG_spcvx300_NL-500_FrM200_FlMreal30_FC50_FT25_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF90000_MS1000000_newestMassSpc_MSF100000_xdim92000_fineMesh75_noMinCalv_parStart10.nc','Transient']
+           #'extenddomain':['extenddomain', 'extenddomain','GeomProj_SpinUp_SG_spcvx300_NL-500_FrM200_FlMreal30_FC50_FT25_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF90000_MS1000000_newestMassSpc_MSF100000_xdim92000_fineMesh75_noMinCalv_parStart10.nc','Transient']
+           #'extenddomain':['extenddomain', 'extenddomain','GeomProj_SpinUp_SG_spcvx800_NL-500_FrM200_FlMreal30_FC40_FT125_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF60000_MS1000000_newestMassSpc_MSF100000_xdim62000_fineMesh75_noMinCalv_parStart2.nc','Transient']
+           'extenddomain':['extenddomain', 'extenddomain','GeomProj_extenddomain_SG_spcvx800_NL-500_FrM200_FlMreal30_FC40_FT50_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF60000_MS1000000_newMassSpc_MSF200000_xdim65000_finestMesh_noMinCalv_accT175_parStart10_inH0_fixedfrontandnocal.nc','Transient'],
+           'insertatinflux':['insertatinflux', 'insertatinflux', 'GeomProj_extenddomain_SG_spcvx800_NL-500_FrM200_FlMreal30_FC40_FT50_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF60000_MS1000000_newMassSpc_MSF200000_xdim65000_finestMesh_noMinCalv_accT175_parStart10_inH0_fixedfrontandnocal.nc','Transient']
            }
 
 
@@ -300,7 +320,10 @@ for run in range(0,run_number):
             'max_stress':max_stress_list[run],
             'max_stress_floating':max_stress_floating_list[run],
             'x_dim':x_dim_list[run],
-            'influx_height':influx_height_list[run]}
+            'influx_height':influx_height_list[run],
+            'smb_pos': smb_pos_list[run],
+            'funnel': funnel_list[run],
+            'smb': smb_list[run]}
     
     if run_type == 'SpinUp':
         load_name=which_run[run_type][2]+'.nc'
@@ -317,10 +340,14 @@ for run in range(0,run_number):
         run_name=prefix+'_'+which_run[run_type][0]+'_SG'+'_spcvx'+str(spcvx_list[run])+'_NL'+str(params['null_level'])+'_FrM'+str(params['frontal_melt'])+'_FlMreal'+str(params['floating_melt'])+'_FC'+str(params['friction'])+'_FT'+str(params['final_time'])+'_TS'+str(params['timestepping'])+'_OF'+str(params['output_frequency'])+'_hmin'+str(params['hmin'])+'_BuH'+str(params['bump_height'])+'_BuP'+str(params['bump_pos'])+'_BuS'+str(params['bump_spread'])+'_ByH'+str(params['bay_height1'])+'_ByP'+str(params['bay_pos1'])+'_ByS'+str(params['bay_spread1'])+'_'+clusterident+'_IF'+str(params['start_icefront'])+'_MS'+str(params['max_stress'])+'_newMassSpc'+'_MSF'+str(params['max_stress_floating'])+'_xdim'+str(params['x_dim'])+'_fineMesh'+'_noMinCalv'+'_accT800'+'_parStart35'+'_inH'+str(params['influx_height'])
     elif run_type == 'extenddomain':
         load_name='../../share_setup/Models/'+which_run[run_type][2]
-        run_name=prefix+'_'+which_run[run_type][0]+'_SG'+'_spcvx'+str(spcvx_list[run])+'_NL'+str(params['null_level'])+'_FrM'+str(params['frontal_melt'])+'_FlMreal'+str(params['floating_melt'])+'_FC'+str(params['friction'])+'_FT'+str(params['final_time'])+'_TS'+str(params['timestepping'])+'_OF'+str(params['output_frequency'])+'_hmin'+str(params['hmin'])+'_BuH'+str(params['bump_height'])+'_BuP'+str(params['bump_pos'])+'_BuS'+str(params['bump_spread'])+'_ByH'+str(params['bay_height1'])+'_ByP'+str(params['bay_pos1'])+'_ByS'+str(params['bay_spread1'])+'_'+clusterident+'_IF'+str(params['start_icefront'])+'_MS'+str(params['max_stress'])+'_newMassSpc'+'_MSF'+str(params['max_stress_floating'])+'_xdim'+str(params['x_dim'])+'_finestMesh'+'_noMinCalv'+'_accT100'+'_parStart10'+'_inH'+str(params['influx_height'])+'_fixedfrontandnocal'
+        run_name=prefix+'_'+which_run[run_type][0]+'_SG'+'_spcvx'+str(spcvx_list[run])+'_NL'+str(params['null_level'])+'_FrM'+str(params['frontal_melt'])+'_FlMreal'+str(params['floating_melt'])+'_FC'+str(params['friction'])+'_FT'+str(params['final_time'])+'_TS'+str(params['timestepping'])+'_OF'+str(params['output_frequency'])+'_hmin'+str(params['hmin'])+'_BuH'+str(params['bump_height'])+'_BuP'+str(params['bump_pos'])+'_BuS'+str(params['bump_spread'])+'_ByH'+str(params['bay_height1'])+'_ByP'+str(params['bay_pos1'])+'_ByS'+str(params['bay_spread1'])+'_'+clusterident+'_IF'+str(params['start_icefront'])+'_MS'+str(params['max_stress'])+'_newMassSpc'+'_MSF'+str(params['max_stress_floating'])+'_xdim'+str(params['x_dim'])+'_finestMesh'+'_noMinCalv'+'_accT225'+'_parStart10'+'_inH'+str(params['influx_height'])+'_cutoff'
+    elif run_type=='insertatinflux':
+        load_name='../../share_setup/Models/'+which_run[run_type][2]
+        run_name=prefix+'_'+which_run[run_type][0]+'_SG'+'_spcvx'+str(spcvx_list[run])+'_NL'+str(params['null_level'])+'_FrM'+str(params['frontal_melt'])+'_FlMreal'+str(params['floating_melt'])+'_FC'+str(params['friction'])+'_FT'+str(params['final_time'])+'_TS'+str(params['timestepping'])+'_OF'+str(params['output_frequency'])+'_hmin'+str(params['hmin'])+'_BuH'+str(params['bump_height'])+'_BuP'+str(params['bump_pos'])+'_BuS'+str(params['bump_spread'])+'_ByH'+str(params['bay_height1'])+'_ByP'+str(params['bay_pos1'])+'_ByS'+str(params['bay_spread1'])+'_'+clusterident+'_IF'+str(params['start_icefront'])+'_MS'+str(params['max_stress'])+'_MSF'+str(params['max_stress_floating'])+'_xdim'+str(params['x_dim'])+'_accT225'+'_inH'+str(params['influx_height'])+'_smb'+str(params['smb'])+'_smbPos'+str(params['smb_pos'])+'_funnel'+str(params['funnel'])
+
     else:
         print('run_type "{}" is not recognised possibilities are :{}'.format(run_type, which_run.keys()))
-
+    
     # }}}
     # Check existence {{{
     #vtk_name = '/media/thomas/TOSHIBA EXT/Geometry_Project/Results/' + run_name
@@ -345,7 +372,7 @@ for run in range(0,run_number):
     if launch_or_get == 'L':
         print('Launching with file {}'.format(load_name))
         writelog(params, run_name, x_dim, y_dim, dc, gap_halfwidth, slope, steepness, step, clusterident, 'log_L.csv', 'L')
-        md = getattr(my_Runner2, which_run[run_type][1])(params, run_name, load_name)
+        md = getattr(my_Runner2, which_run[run_type][1])(params, run_name, load_name, fixfront)
         md.cluster = cluster
         if clustername != gethostname():
             md.cluster.interactive = 0
@@ -353,14 +380,17 @@ for run in range(0,run_number):
         else:
             md.cluster.interactive = 1
             md.settings.waitonlock = math.inf
-        md.transient.requested_outputs=['TotalSmb','SmbMassBalance','IceVolume','IceVolumeAboveFloatation',  'IceVolumeAboveFloatationScaled','GroundedAreaScaled',  'FloatingAreaScaled','IceMass','GroundedArea','FloatingArea','TotalFloatingBmb',   'BasalforcingsFloatingiceMeltingRate', 'IcefrontMassFluxLevelset','IcefrontMassFlux', 'GroundinglineMassFlux']
+        if fixfront==True:
+            md.transient.requested_outputs=['TotalSmb','SmbMassBalance','IceVolume','IceVolumeAboveFloatation',  'IceVolumeAboveFloatationScaled','GroundedAreaScaled',  'FloatingAreaScaled','IceMass','GroundedArea','FloatingArea','TotalFloatingBmb',   'BasalforcingsFloatingiceMeltingRate', 'IcefrontMassFluxLevelset','IcefrontMassFlux', 'GroundinglineMassFlux']
+        else:
+            md.transient.requested_outputs=['TotalSmb','SmbMassBalance','IceVolume','IceVolumeAboveFloatation',  'IceVolumeAboveFloatationScaled','GroundedAreaScaled',  'FloatingAreaScaled','IceMass','GroundedArea','FloatingArea','TotalFloatingBmb',   'BasalforcingsFloatingiceMeltingRate', 'IcefrontMassFluxLevelset','IcefrontMassFlux', 'GroundinglineMassFlux', 'TotalCalvingFluxLevelset', 'CalvingMeltingFluxLevelset']
         md = solve(md, which_run[run_type][3], 'runtimename', 0)
         
     # }}}
     # Retriever {{{
     elif launch_or_get == 'r':
         print('retreiving')
-        md = getattr(my_Runner2, which_run[run_type][1])(params, run_name, load_name)
+        md = getattr(my_Runner2, which_run[run_type][1])(params, run_name, load_name, fixfront)
         md.cluster = cluster
         md = loadresultsfromcluster(md, run_name)
         export_netCDF(md, model_name)
