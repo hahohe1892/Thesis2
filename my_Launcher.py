@@ -171,7 +171,7 @@ for i, bump_height_val in enumerate(bump_height):
                                                                                 max_stress_floating_list+=[max_stress_floating_val]
                                                                                 x_dim_list+=[x_dim_val]
                                                                                 influx_height_list+=[influx_height_val]
-                                                                                smb_pos_list+=[smb_val]
+                                                                                smb_pos_list+=[smb_pos_val]
                                                                                 funnel_list+=[funnel_val]
                                                                                 smb_list+=[smb_val]
 
