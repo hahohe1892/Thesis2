@@ -18,8 +18,8 @@ clustername = 'Stallo'
 
 if clustername == 'Stallo':
     clusterident='Stallo'
-    cluster = stallo('numnodes', 1, 'cpuspernode', 16, 'time', 4 * 60, 'queue', 'devel')  # time in minutes
-    #cluster = stallo('numnodes', 1, 'cpuspernode', 16, 'mem', 1.9, 'time', 10 * 60)  #time in minutes
+    #cluster = stallo('numnodes', 1, 'cpuspernode', 16, 'time', 4 * 60, 'queue', 'devel')  # time in minutes
+    cluster = stallo('numnodes', 1, 'cpuspernode', 16, 'mem', 1.9, 'time', 20 * 60)  #time in minutes
     #cluster = stallo('numnodes', 1, 'cpuspernode', 16, 'mem', 1.9, 'time', 10 * 60)  #time in minutes
 else:
     #cluster = generic('name', clustername, 'np', 1, 'valgrind', '/usr/bin/valgrind', 'valgrindlib', '/usr/lib/valgrind/libmpiwrap-amd64-linux.so')
@@ -59,7 +59,7 @@ bay_skew2=[0,0]
 smb_pos=[30000]
 funnel=[300]
 
-smb=[20]
+smb=[20,30,50]
 slab_thickness=[2000]
 steepness=[1./300]
 min_thickness_mask=[1]
@@ -76,9 +76,9 @@ influx_height=[0]
 
 
 
-final_time=[5]
+final_time=[200]
 timestepping=[0.01]
-output_frequency=[50]
+output_frequency=[100]
 
 x_dim=[85000]
 ## define parameters lists
