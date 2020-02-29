@@ -59,7 +59,7 @@ bay_skew2=[0,0]
 smb_pos=[30000]
 funnel=[300]
 
-smb=[55]
+smb=[53]
 slab_thickness=[2000]
 steepness=[1./300]
 min_thickness_mask=[1]
@@ -76,7 +76,7 @@ influx_height=[0]
 
 
 
-final_time=[200]
+final_time=[250]
 timestepping=[0.01]
 output_frequency=[100]
 
