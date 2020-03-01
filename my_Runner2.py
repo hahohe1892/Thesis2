@@ -121,7 +121,7 @@ def SpinUp_load(params, run_name, load_name, fixfront):
     restart_time=200
     y_dim, x_dim, slope, dc, gap_halfwidth, step = standardvalues()
     x_dim=params['x_dim']
-    
+
     md=loadmodel(load_name) 
     md=transientrestart(md, md, restart_time)
     md.miscellaneous.name=run_name
@@ -134,9 +134,22 @@ def SpinUp_load(params, run_name, load_name, fixfront):
     md.frontalforcings.meltingrate=params['frontal_melt']*np.ones(md.mesh.numberofvertices)
     md.basalforcings.floatingice_melting_rate=params['floating_melt']*np.ones(md.mesh.numberofvertices)
     md.stressbalance.spcvx[np.where(md.mesh.x<5)]=params['spcvx']
+    
+    md.calving=calvingvonmises()
     md.calving.stress_threshold_groundedice=params['max_stress']
     md.calving.stress_threshold_floatingice=params['max_stress_floating'] 
     md.friction.coefficient=params['friction']*np.ones(md.mesh.numberofvertices)
+
+    if fixfront == True:
+        md.transient.ismovingfront=0
+    else:
+        md.transient.ismovingfront=1
+
+
+    md.smb.mass_balance=np.zeros(md.mesh.numberofvertices)
+    md.smb.mass_balance[np.where(md.mesh.x<10000)]=params['smb']
+
+
     #thk_dif=(dc+params['influx_height']+params['null_level'])*np.ones(len(md.mesh.x[np.where(md.mesh.x<5)]))-md.geometry.base[np.where(md.mesh.x<5)]
     #md.masstransport.spcthickness[np.where(md.mesh.x<5)]=thk_dif
     #md.geometry.thickness[np.where(md.mesh.x<5)]=md.masstransport.spcthickness[np.where(md.mesh.x<5)]
