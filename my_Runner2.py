@@ -118,7 +118,7 @@ def SpinUp(params, run_name, load_name):
 
 def SpinUp_load(params, run_name, load_name, fixfront):
 
-    restart_time=200
+    restart_time=100
     y_dim, x_dim, slope, dc, gap_halfwidth, step = standardvalues()
     x_dim=params['x_dim']
 
@@ -149,7 +149,7 @@ def SpinUp_load(params, run_name, load_name, fixfront):
     md.smb.mass_balance=np.zeros(md.mesh.numberofvertices)
     md.smb.mass_balance[np.where(md.mesh.x<10000)]=params['smb']
 
-
+    md.groundingline.melt_interpolation='FullMeltOnPartiallyFloating'
     #thk_dif=(dc+params['influx_height']+params['null_level'])*np.ones(len(md.mesh.x[np.where(md.mesh.x<5)]))-md.geometry.base[np.where(md.mesh.x<5)]
     #md.masstransport.spcthickness[np.where(md.mesh.x<5)]=thk_dif
     #md.geometry.thickness[np.where(md.mesh.x<5)]=md.masstransport.spcthickness[np.where(md.mesh.x<5)]
