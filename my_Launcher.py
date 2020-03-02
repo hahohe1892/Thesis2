@@ -66,8 +66,8 @@ min_thickness_mask=[1]
 spcvx=[50]
 hmin=[350]
 null_level=[-450]
-frontal_melt=[800]
-floating_melt=[120]
+frontal_melt=[1000]
+floating_melt=[150]
 friction=[40]
 start_icefront=[60000]
 max_stress=[1000000]
@@ -218,7 +218,8 @@ which_run={'SpinUp':['SpinUp', 'SpinUp', 'dummy', 'Transient'],
            #'SpinUp_load':['SpinUp_load', 'SpinUp_load','GeomProj_insertatinflux_SG_spcvx50_NL-450_FrM200_FlMreal30_FC40_FT250_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF60000_MS1000000_MSF200000_xdim85000_accT225_inH0_smb53_smbPos30000_funnel300.nc','Transient'],
            #'SpinUp_load':['SpinUp_load', 'SpinUp_load','GeomProj_SpinUp_load_SG_spcvx50_NL-450_FrM200_FlMreal30_FC40_FT200_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF60000_MS1000000_MSF200000_xdim85000_accT575_inH0_smb55_smbPos30000_funnel300.nc','Transient'],
           # 'SpinUp_load':['SpinUp_load', 'SpinUp_load','GeomProj_SpinUp_load_SG_spcvx50_NL-450_FrM200_FlMreal30_FC40_FT100_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF60000_MS1000000_MSF200000_xdim85000_accT675_inH0_smb55_smbPos30000_funnel300.nc','Transient'],
-           'SpinUp_load':['SpinUp_load', 'SpinUp_load','GeomProj_SpinUp_load_SG_spcvx50_NL-450_FrM800_FlMreal120_FC40_FT50_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF60000_MS1000000_MSF200000_xdim85000_accT725_inH0_smb55_smbPos30000_funnel300_FullMelt.nc','Transient'],
+           #'SpinUp_load':['SpinUp_load', 'SpinUp_load','GeomProj_SpinUp_load_SG_spcvx50_NL-450_FrM800_FlMreal120_FC40_FT50_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF60000_MS1000000_MSF200000_xdim85000_accT725_inH0_smb55_smbPos30000_funnel300_FullMelt.nc','Transient'],
+           'SpinUp_load':['SpinUp_load', 'SpinUp_load','GeomProj_SpinUp_load_SG_spcvx50_NL-450_FrM1000_FlMreal150_FC40_FT50_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF60000_MS1000000_MSF200000_xdim85000_accT725_inH0_smb55_smbPos30000_funnel300_FullMelt.nc','Transient'],
            #'extenddomain':['extenddomain', 'extenddomain', 'GeomProj_SpinUp_load_SG_spcvx2000_NL-500_FrM0_FlM0_FC35_FT200_TS0.025_OF40_hmin250_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF20000_linRheol_newBedFr.nc', 'Transient'],
            #'extenddomain':['extenddomain', 'extenddomain','GeomProj_SpinUp_SG_spcvx300_NL-500_FrM200_FlM30_FC50_FT100_TS0.025_OF40_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF150000_linRheol_3DFr_MS1000000_newMassSpc_MSF300000_xdim200000_FrGr5_fineMesh.nc','Transient'],
            #'extenddomain':['extenddomain', 'extenddomain', 'GeomProj_SpinUp_SG_spcvx300_NL-500_FrM400_FlMreal50_FC50_FT20_TS0.025_OF20_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF150000_MS1000000_newMassSpc_MSF200000_xdim200000_fineMesh.nc', 'Transient'],
