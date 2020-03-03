@@ -30,8 +30,8 @@ else:
 prefix = 'GeomProj'
 
 #run_type='SpinUp'   
-run_type='SpinUp_load' 
-#run_type='extenddomain' 
+#run_type='SpinUp_load' 
+run_type='extenddomain' 
 #run_type='insertatinflux'
 
 plotting='off'
@@ -41,10 +41,10 @@ y_dim, x_dim, slope, dc, gap_halfwidth, step = standardvalues()
 
 fixfront=False
 
-bump_height=[0]#150, 300, -33]
-bump_spread=[0]#31250, 13750, 40000]
-bump_pos=[0]#30000,40000,30000]
-bump_skew=[0]#0,0]
+bump_height=[120,-120]
+bump_spread=[20000,20000]
+bump_pos=[55000,55000]
+bump_skew=[0,0]
 
 bay_height1=[0,0]
 bay_spread1=[0,0]
@@ -66,8 +66,8 @@ min_thickness_mask=[1]
 spcvx=[50]
 hmin=[350]
 null_level=[-450]
-frontal_melt=[800]
-floating_melt=[120]
+frontal_melt=[200]
+floating_melt=[30]
 friction=[40]
 start_icefront=[60000]
 max_stress=[1000000]
@@ -76,7 +76,7 @@ influx_height=[0]
 
 
 
-final_time=[200]
+final_time=[50]
 timestepping=[0.01]
 output_frequency=[100]
 
@@ -288,7 +288,9 @@ which_run={'SpinUp':['SpinUp', 'SpinUp', 'dummy', 'Transient'],
            #'extenddomain':['extenddomain', 'extenddomain','GeomProj_extenddomain_SG_spcvx700_NL-500_FrM0_FlMreal0_FC35_FT50_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF20000_MS1000000_newMassSpc_MSF100000_xdim70000_finestMesh_noMinCalv_accT177_parStart10_inH1500.nc','Transient']
            #'extenddomain':['extenddomain', 'extenddomain','GeomProj_SpinUp_SG_spcvx300_NL-500_FrM200_FlMreal30_FC50_FT25_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF90000_MS1000000_newestMassSpc_MSF100000_xdim92000_fineMesh75_noMinCalv_parStart10.nc','Transient']
            #'extenddomain':['extenddomain', 'extenddomain','GeomProj_SpinUp_SG_spcvx800_NL-500_FrM200_FlMreal30_FC40_FT125_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF60000_MS1000000_newestMassSpc_MSF100000_xdim62000_fineMesh75_noMinCalv_parStart2.nc','Transient']
-           'extenddomain':['extenddomain', 'extenddomain','GeomProj_extenddomain_SG_spcvx800_NL-500_FrM200_FlMreal30_FC40_FT50_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF60000_MS1000000_newMassSpc_MSF200000_xdim65000_finestMesh_noMinCalv_accT175_parStart10_inH0_fixedfrontandnocal.nc','Transient'],
+          # 'extenddomain':['extenddomain', 'extenddomain','GeomProj_extenddomain_SG_spcvx800_NL-500_FrM200_FlMreal30_FC40_FT50_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF60000_MS1000000_newMassSpc_MSF200000_xdim65000_finestMesh_noMinCalv_accT175_parStart10_inH0_fixedfrontandnocal.nc','Transient'],
+          # 'extenddomain':['extenddomain', 'extenddomain','GeomProj_SpinUp_load_SG_spcvx50_NL-450_FrM200_FlMreal100_FC40_FT100_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF60000_MS1000000_MSF200000_xdim85000_accT825_inH0_smb55_smbPos30000_funnel300_FullMelt.nc','Transient'],
+           'extenddomain':['extenddomain', 'extenddomain','GeomProj_SpinUp_load_SG_spcvx50_NL-450_FrM200_FlMreal30_FC40_FT100_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF60000_MS1000000_MSF200000_xdim85000_accT875_inH0_smb55_smbPos30000_funnel300_FullMelt.nc','Transient'],
            'insertatinflux':['insertatinflux', 'insertatinflux', 'GeomProj_extenddomain_SG_spcvx800_NL-500_FrM200_FlMreal30_FC40_FT50_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF60000_MS1000000_newMassSpc_MSF200000_xdim65000_finestMesh_noMinCalv_accT175_parStart10_inH0_fixedfrontandnocal.nc','Transient']
            }
 
@@ -345,7 +347,7 @@ for run in range(0,run_number):
         run_name=prefix+'_'+which_run[run_type][0]+'_SG'+'_spcvx'+str(spcvx_list[run])+'_NL'+str(params['null_level'])+'_FrM'+str(params['frontal_melt'])+'_FlMreal'+str(params['floating_melt'])+'_FC'+str(params['friction'])+'_FT'+str(params['final_time'])+'_TS'+str(params['timestepping'])+'_OF'+str(params['output_frequency'])+'_hmin'+str(params['hmin'])+'_BuH'+str(params['bump_height'])+'_BuP'+str(params['bump_pos'])+'_BuS'+str(params['bump_spread'])+'_ByH'+str(params['bay_height1'])+'_ByP'+str(params['bay_pos1'])+'_ByS'+str(params['bay_spread1'])+'_'+clusterident+'_IF'+str(params['start_icefront'])+'_MS'+str(params['max_stress'])+'_MSF'+str(params['max_stress_floating'])+'_xdim'+str(params['x_dim'])+'_accT825'+'_inH'+str(params['influx_height'])+'_smb'+str(params['smb'])+'_smbPos'+str(params['smb_pos'])+'_funnel'+str(params['funnel'])+'_FullMelt'
     elif run_type == 'extenddomain':
         load_name='../../share_setup/Models/'+which_run[run_type][2]
-        run_name=prefix+'_'+which_run[run_type][0]+'_SG'+'_spcvx'+str(spcvx_list[run])+'_NL'+str(params['null_level'])+'_FrM'+str(params['frontal_melt'])+'_FlMreal'+str(params['floating_melt'])+'_FC'+str(params['friction'])+'_FT'+str(params['final_time'])+'_TS'+str(params['timestepping'])+'_OF'+str(params['output_frequency'])+'_hmin'+str(params['hmin'])+'_BuH'+str(params['bump_height'])+'_BuP'+str(params['bump_pos'])+'_BuS'+str(params['bump_spread'])+'_ByH'+str(params['bay_height1'])+'_ByP'+str(params['bay_pos1'])+'_ByS'+str(params['bay_spread1'])+'_'+clusterident+'_IF'+str(params['start_icefront'])+'_MS'+str(params['max_stress'])+'_newMassSpc'+'_MSF'+str(params['max_stress_floating'])+'_xdim'+str(params['x_dim'])+'_finestMesh'+'_noMinCalv'+'_accT225'+'_parStart10'+'_inH'+str(params['influx_height'])+'_cutoff'
+        run_name=prefix+'_'+which_run[run_type][0]+'_SG'+'_spcvx'+str(spcvx_list[run])+'_NL'+str(params['null_level'])+'_FrM'+str(params['frontal_melt'])+'_FlMreal'+str(params['floating_melt'])+'_FC'+str(params['friction'])+'_FT'+str(params['final_time'])+'_TS'+str(params['timestepping'])+'_OF'+str(params['output_frequency'])+'_hmin'+str(params['hmin'])+'_BuH'+str(params['bump_height'])+'_BuP'+str(params['bump_pos'])+'_BuS'+str(params['bump_spread'])+'_ByH'+str(params['bay_height1'])+'_ByP'+str(params['bay_pos1'])+'_ByS'+str(params['bay_spread1'])+'_'+clusterident+'_IF'+str(params['start_icefront'])+'_MS'+str(params['max_stress'])+'_MSF'+str(params['max_stress_floating'])+'_xdim'+str(params['x_dim'])+'_accT925'+'_inH'+str(params['influx_height'])+'_smb'+str(params['smb'])+'_smbPos'+str(params['smb_pos'])+'_funnel'+str(params['funnel'])+'_FullMelt'
     elif run_type=='insertatinflux':
         load_name='../../share_setup/Models/'+which_run[run_type][2]
         run_name=prefix+'_'+which_run[run_type][0]+'_SG'+'_spcvx'+str(spcvx_list[run])+'_NL'+str(params['null_level'])+'_FrM'+str(params['frontal_melt'])+'_FlMreal'+str(params['floating_melt'])+'_FC'+str(params['friction'])+'_FT'+str(params['final_time'])+'_TS'+str(params['timestepping'])+'_OF'+str(params['output_frequency'])+'_hmin'+str(params['hmin'])+'_BuH'+str(params['bump_height'])+'_BuP'+str(params['bump_pos'])+'_BuS'+str(params['bump_spread'])+'_ByH'+str(params['bay_height1'])+'_ByP'+str(params['bay_pos1'])+'_ByS'+str(params['bay_spread1'])+'_'+clusterident+'_IF'+str(params['start_icefront'])+'_MS'+str(params['max_stress'])+'_MSF'+str(params['max_stress_floating'])+'_xdim'+str(params['x_dim'])+'_accT225'+'_inH'+str(params['influx_height'])+'_smb'+str(params['smb'])+'_smbPos'+str(params['smb_pos'])+'_funnel'+str(params['funnel'])
