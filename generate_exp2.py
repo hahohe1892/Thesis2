@@ -10,11 +10,11 @@ import gc
 def generateEXP(params, x_dim, y_dim):
     e=open('./exp_file2.exp', 'w')
     
-    #x_coordinates=[0, int(params['bay_pos1']-(params['bay_spread1'])/2),int(params['bay_pos1']-(params['bay_spread1'])/2), int(params['bay_pos1']+(params['bay_spread1'])/2), int(params['bay_pos1']+(params['bay_spread1'])/2), x_dim, x_dim, int(params['bay_pos2']+(params['bay_spread2'])/2), int(params['bay_pos2']+(params['bay_spread2'])/2), int(params['bay_pos2']-(params['bay_spread2'])/2), int(params['bay_pos2']-(params['bay_spread2'])/2), 0, 0]
-    #y_coordinates=[10000, 10000, 10000-max(params['bay_height1'],0), 10000-max(params['bay_height1'],0), 10000, 10000, 10000+y_dim, 10000+y_dim, 10000+y_dim+max(params['bay_height2'],0), 10000+y_dim+max(params['bay_height2'],0), 10000+y_dim, 10000+y_dim, 10000]
+    x_coordinates=[0, int(params['bay_pos1']-(params['bay_spread1'])/2),int(params['bay_pos1']-(params['bay_spread1'])/2), int(params['bay_pos1']+(params['bay_spread1'])/2), int(params['bay_pos1']+(params['bay_spread1'])/2), x_dim, x_dim, int(params['bay_pos2']+(params['bay_spread2'])/2), int(params['bay_pos2']+(params['bay_spread2'])/2), int(params['bay_pos2']-(params['bay_spread2'])/2), int(params['bay_pos2']-(params['bay_spread2'])/2), 0, 0]
+    y_coordinates=[10000, 10000, 10000-max(params['bay_height1'],0), 10000-max(params['bay_height1'],0), 10000, 10000, 10000+y_dim, 10000+y_dim, 10000+y_dim+max(params['bay_height2'],0), 10000+y_dim+max(params['bay_height2'],0), 10000+y_dim, 10000+y_dim, 10000]
 
-    x_coordinates=[0,x_dim, x_dim, 0,0]
-    y_coordinates=[10000-max(params['bay_height1'],0), 10000-max(params['bay_height1'],0), 10000+y_dim+max(params['bay_height1'],0), 10000+y_dim+max(params['bay_height1'],0), 10000-max(params['bay_height1'],0)]
+    #x_coordinates=[0,x_dim, x_dim, 0,0]
+    #y_coordinates=[10000-max(params['bay_height1'],0), 10000-max(params['bay_height1'],0), 10000+y_dim+max(params['bay_height1'],0), 10000+y_dim+max(params['bay_height1'],0), 10000-max(params['bay_height1'],0)]
     
     p=1
     tuple_list=[]
@@ -36,7 +36,7 @@ def generateEXP(params, x_dim, y_dim):
         else:
             tuple_list.append(check)
             e.write('{} {} \n'.format(x_coordinates[i], y_coordinates[i]))
-    e.write('0 {}'.format(10000-max(params['bay_height1'],0)))
+    e.write('0 {}'.format(10000))
     e.close()
 
     
