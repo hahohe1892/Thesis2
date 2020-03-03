@@ -238,7 +238,7 @@ def extenddomain(params, run_name, load_name, fixfront):
     ##cutoff
     #md.mask.ice_levelset[np.where(md.mesh.x>90000)]=1
     #md.mask.ice_levelset[np.where(md.geometry.bed>1)]=-1
-    md.mask.ice_levelset[np.where(md.mask.groundedice_levelset<0)]=1
+    #md.mask.ice_levelset[np.where(md.mask.groundedice_levelset<0)]=1
     ##
     
     md.friction.coefficient=params['friction']*np.ones(md.mesh.numberofvertices)
