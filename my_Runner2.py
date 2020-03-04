@@ -158,7 +158,7 @@ def SpinUp_load(params, run_name, load_name, fixfront):
     return md
 
 def extenddomain(params, run_name, load_name, fixfront):
-    restart_time=200
+    restart_time=-1
     y_dim, x_dim, slope, dc, gap_halfwidth, step = standardvalues()
     start_icefront=params['start_icefront']
     slab_thickness=params['slab_thickness']
@@ -229,11 +229,13 @@ def extenddomain(params, run_name, load_name, fixfront):
     md.geometry.base[grounded_mask]=md.geometry.bed[grounded_mask]
     md.geometry.surface=md.geometry.base+md.geometry.thickness
 
-    
-    mask_pos=np.where(md.geometry.surface>1)
-    md.mask.ice_levelset=np.ones(md.mesh.numberofvertices)
-    md.mask.ice_levelset[mask_pos]=-1
-    md.mask.ice_levelset[np.where(md.geometry.thickness>1)]=-1
+    if hasattr(md2.results.TransientSolution[restart_time], 'MaskIceLevelset'):
+        md.mask.ice_levelset=InterpFromMeshToMesh2d(md2.mesh.elements, md2.mesh.x, md2.mesh.y, md2.results.TransientSolution[restart_time].MaskIceLevelset, md.mesh.x, md.mesh.y)[0][:,0]
+    else:
+        mask_pos=np.where(md.geometry.surface>1)
+        md.mask.ice_levelset=np.ones(md.mesh.numberofvertices)
+        md.mask.ice_levelset[mask_pos]=-1
+        md.mask.ice_levelset[np.where(md.geometry.thickness>1)]=-1
 
     ##cutoff
     #md.mask.ice_levelset[np.where(md.mesh.x>90000)]=1

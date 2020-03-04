@@ -29,7 +29,7 @@ def transientrestart(md, md2, n):
         md.mask.ice_levelset=md2.results.TransientSolution[n].MaskIceLevelset
     else:
         md.mask.ice_levelset=np.ones(md.mesh.numberofvertices)*-1
-        md.mask.ice_levelset[np.where(md2.results.TransientSolution[n].Thickness<2)]=1
+        md.mask.ice_levelset[np.where(md2.results.TransientSolution[n].Thickness<1.5)]=1
 
 
     return md
