@@ -28,6 +28,7 @@ def transientrestart(md, md2, n):
         md2.results.TransientSolution[n].MaskIceLevelset=np.squeeze(md2.results.TransientSolution[n].MaskIceLevelset)
         md.mask.ice_levelset=md2.results.TransientSolution[n].MaskIceLevelset
     else:
+        print('No Mask present')
         md.mask.ice_levelset=np.ones(md.mesh.numberofvertices)*-1
         md.mask.ice_levelset[np.where(md2.results.TransientSolution[n].Thickness<2)]=1
 

@@ -125,8 +125,8 @@ def SpinUp_load(params, run_name, load_name, fixfront):
     md=loadmodel(load_name) 
     md=transientrestart(md, md, restart_time)
     md.miscellaneous.name=run_name
-    md.mask.ice_levelset[np.where(md.results.TransientSolution[restart_time].Thickness<=1)[0]]=1
-    md.mask.ice_levelset[np.where(md.levelset.spclevelset==-1)]=-1
+    #md.mask.ice_levelset[np.where(md.results.TransientSolution[restart_time].Thickness<=1)[0]]=1
+    #md.mask.ice_levelset[np.where(md.levelset.spclevelset==-1)]=-1
     md.timestepping.final_time=params['final_time']
     md.timestepping.time_step=params['timestepping']
     md.settings.output_frequency=params['output_frequency']
