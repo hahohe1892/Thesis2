@@ -41,7 +41,7 @@ y_dim, x_dim, slope, dc, gap_halfwidth, step = standardvalues()
 
 fixfront=False
 
-bump_height=[-120]
+bump_height=[120]
 bump_spread=[20000]
 bump_pos=[55000]
 bump_skew=[0]
@@ -292,7 +292,7 @@ which_run={'SpinUp':['SpinUp', 'SpinUp', 'dummy', 'Transient'],
           # 'extenddomain':['extenddomain', 'extenddomain','GeomProj_extenddomain_SG_spcvx800_NL-500_FrM200_FlMreal30_FC40_FT50_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF60000_MS1000000_newMassSpc_MSF200000_xdim65000_finestMesh_noMinCalv_accT175_parStart10_inH0_fixedfrontandnocal.nc','Transient'],
           # 'extenddomain':['extenddomain', 'extenddomain','GeomProj_SpinUp_load_SG_spcvx50_NL-450_FrM200_FlMreal100_FC40_FT100_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF60000_MS1000000_MSF200000_xdim85000_accT825_inH0_smb55_smbPos30000_funnel300_FullMelt.nc','Transient'],
            #'extenddomain':['extenddomain', 'extenddomain','GeomProj_SpinUp_load_SG_spcvx50_NL-450_FrM200_FlMreal30_FC40_FT100_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF60000_MS1000000_MSF200000_xdim85000_accT875_inH0_smb55_smbPos30000_funnel300_FullMelt.nc','Transient'],
-           'extenddomain':['extenddomain', 'extenddomain','GeomProj_extenddomain_SG_spcvx50_NL-450_FrM200_FlMreal30_FC40_FT50_TS0.01_OF100_hmin350_BuH-120_BuP55000_BuS20000_ByH0_ByP0_ByS0_Stallo_IF60000_MS1000000_MSF200000_xdim85000_accT925_inH0_smb55_smbPos30000_funnel300_FullMelt_noCutoff.nc','Transient'],
+           'extenddomain':['extenddomain', 'extenddomain','GeomProj_extenddomain_SG_spcvx50_NL-450_FrM200_FlMreal30_FC40_FT50_TS0.01_OF100_hmin350_BuH120_BuP55000_BuS20000_ByH0_ByP0_ByS0_Stallo_IF60000_MS1000000_MSF200000_xdim85000_accT925_inH0_smb55_smbPos30000_funnel300_FullMelt_noCutoff.nc','Transient'],
            'insertatinflux':['insertatinflux', 'insertatinflux', 'GeomProj_extenddomain_SG_spcvx800_NL-500_FrM200_FlMreal30_FC40_FT50_TS0.01_OF100_hmin350_BuH0_BuP0_BuS0_ByH0_ByP0_ByS0_Stallo_IF60000_MS1000000_newMassSpc_MSF200000_xdim65000_finestMesh_noMinCalv_accT175_parStart10_inH0_fixedfrontandnocal.nc','Transient']
            }
 
