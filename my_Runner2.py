@@ -125,8 +125,8 @@ def SpinUp_load(params, run_name, load_name, fixfront):
     md=loadmodel(load_name) 
     md=transientrestart(md, md, restart_time)
     md.miscellaneous.name=run_name
-    #md.mask.ice_levelset[np.where(md.results.TransientSolution[restart_time].Thickness<=1)[0]]=1
-    #md.mask.ice_levelset[np.where(md.levelset.spclevelset==-1)]=-1
+    md.mask.ice_levelset[np.where(md.results.TransientSolution[restart_time].Thickness<=1)[0]]=1
+    md.mask.ice_levelset[np.where(md.levelset.spclevelset==-1)]=-1
     md.timestepping.final_time=params['final_time']
     md.timestepping.time_step=params['timestepping']
     md.settings.output_frequency=params['output_frequency']
@@ -158,7 +158,7 @@ def SpinUp_load(params, run_name, load_name, fixfront):
     return md
 
 def extenddomain(params, run_name, load_name, fixfront):
-    restart_time=-1
+    restart_time=50
     y_dim, x_dim, slope, dc, gap_halfwidth, step = standardvalues()
     start_icefront=params['start_icefront']
     slab_thickness=params['slab_thickness']
@@ -237,7 +237,6 @@ def extenddomain(params, run_name, load_name, fixfront):
     if hasattr(md2.results.TransientSolution[restart_time], 'MaskIceLevelset'):
         md.mask.ice_levelset=InterpFromMeshToMesh2d(md2.mesh.elements, md2.mesh.x, md2.mesh.y, md2.results.TransientSolution[restart_time].MaskIceLevelset, md.mesh.x, md.mesh.y)[0][:,0]
     else:
-        print('No Mask present')
         mask_pos=np.where(md.geometry.surface>1)
         md.mask.ice_levelset=np.ones(md.mesh.numberofvertices)
         md.mask.ice_levelset[mask_pos]=-1
