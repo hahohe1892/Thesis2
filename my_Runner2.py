@@ -118,7 +118,7 @@ def SpinUp(params, run_name, load_name):
 
 def SpinUp_load(params, run_name, load_name, fixfront):
 
-    restart_time=-1
+    restart_time=50
     y_dim, x_dim, slope, dc, gap_halfwidth, step = standardvalues()
     x_dim=params['x_dim']
 
@@ -158,7 +158,7 @@ def SpinUp_load(params, run_name, load_name, fixfront):
     return md
 
 def extenddomain(params, run_name, load_name, fixfront):
-    restart_time=-1
+    restart_time=100
     y_dim, x_dim, slope, dc, gap_halfwidth, step = standardvalues()
     start_icefront=params['start_icefront']
     slab_thickness=params['slab_thickness']
@@ -178,7 +178,7 @@ def extenddomain(params, run_name, load_name, fixfront):
     old_mesh_geometry=md.geometry.bed
     h=np.nan*np.ones(md.mesh.numberofvertices)
     #h[np.where(np.logical_and(np.logical_and(md.mesh.y<17800, md.mesh.y>12200), np.logical_and(md.mesh.x<65000, md.mesh.x>20000)))]=100  #25000
-    h[np.where(np.logical_and(md.geometry.bed<1200, np.logical_and(md.mesh.x<85000, md.mesh.x>35000)))]=100
+    h[np.where(np.logical_and(md.geometry.bed<1200, np.logical_and(md.mesh.x<85000, md.mesh.x>30000)))]=100
     
     md=bamg(md, 'field', old_mesh_geometry, 'hmax', 1000, 'hmin', params['hmin'], 'gradation', 1, 'hVertices', h)
     md.miscellaneous.name=run_name
@@ -230,17 +230,10 @@ def extenddomain(params, run_name, load_name, fixfront):
     md.geometry.surface=md.geometry.base+md.geometry.thickness
 
     
-    #mask_pos=np.where(md.geometry.surface>1)
-    #md.mask.ice_levelset=np.ones(md.mesh.numberofvertices)
-    #md.mask.ice_levelset[mask_pos]=-1
-    #md.mask.ice_levelset[np.where(md.geometry.thickness>1)]=-1
-    if hasattr(md2.results.TransientSolution[restart_time], 'MaskIceLevelset'):
-        md.mask.ice_levelset=InterpFromMeshToMesh2d(md2.mesh.elements, md2.mesh.x, md2.mesh.y, md2.results.TransientSolution[restart_time].MaskIceLevelset, md.mesh.x, md.mesh.y)[0][:,0]
-    else:
-        mask_pos=np.where(md.geometry.surface>1)
-        md.mask.ice_levelset=np.ones(md.mesh.numberofvertices)
-        md.mask.ice_levelset[mask_pos]=-1
-        md.mask.ice_levelset[np.where(md.geometry.thickness>1)]=-1
+    mask_pos=np.where(md.geometry.surface>1)
+    md.mask.ice_levelset=np.ones(md.mesh.numberofvertices)
+    md.mask.ice_levelset[mask_pos]=-1
+    md.mask.ice_levelset[np.where(md.geometry.thickness>1)]=-1
 
     ##cutoff
     #md.mask.ice_levelset[np.where(md.mesh.x>90000)]=1
@@ -275,19 +268,7 @@ def extenddomain(params, run_name, load_name, fixfront):
     md.masstransport.min_thickness=1
 
     md.frontalforcings.meltingrate=params['frontal_melt']*np.ones(md.mesh.numberofvertices)
-
     md.basalforcings.floatingice_melting_rate=params['floating_melt']*np.ones(md.mesh.numberofvertices)
-    
-    #forcing_start_shelf=np.ones(md.mesh.numberofvertices)*60
-    #forcing_increase_shelf=np.ones(md.mesh.numberofvertices)*params['floating_melt']
-    #forcing_shelf=np.array([forcing_start_shelf, forcing_start_shelf, forcing_increase_shelf, forcing_increase_shelf]).T
-    #md.basalforcings.floatingice_melting_rate=np.concatenate((forcing_shelf, [[1,5,6, 50]]))
-
-    #forcing_start_front=np.ones(md.mesh.numberofvertices)*400
-    #forcing_increase_front=np.ones(md.mesh.numberofvertices)*params['frontal_melt']
-    #forcing_front=np.array([forcing_start_front, forcing_start_front, forcing_increase_front, forcing_increase_front]).T
-    #md.frontalforcings.meltingrate=np.concatenate((forcing_front, [[1,5,6, 50]]))
-
     md.cluster=md2.cluster
     
     md.calving.stress_threshold_groundedice=params['max_stress']
