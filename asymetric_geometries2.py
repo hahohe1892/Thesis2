@@ -1,6 +1,6 @@
 import numpy as np
 
-def Geometry(md, y_dim, x_dim, slope, bump_spread, bump_height, bump_pos,bump_skew, steepness, gap_halfwidth, dc, bay_spread1, bay_height1, bay_pos1,bay_skew1, bay_spread2, bay_height2, bay_pos2,bay_skew2, step):
+def Geometry(md, y_dim, x_dim, slope, bump_spread, bump_height, bump_pos,bump_skew, steepness, gap_halfwidth, dc, bay_spread1, bay_height1, bay_pos1,bay_skew1, bay_spread2, bay_height2, bay_pos2,bay_skew2, step, acc_pos, funnel):
 
     bump_area=np.where(np.logical_and(md.mesh.x>bump_pos-bump_spread/2, md.mesh.x<bump_pos+bump_spread/2))
 
@@ -10,6 +10,12 @@ def Geometry(md, y_dim, x_dim, slope, bump_spread, bump_height, bump_pos,bump_sk
     By=np.ones(md.mesh.numberofvertices)*(((dc-Bx)/(1+np.exp(steepness*(md.mesh.y-y_dim/2+gap_halfwidth)))+(dc-Bx)/(1+np.exp(-steepness*(md.mesh.y-y_dim/2-gap_halfwidth))))+Bx)
 
     #By=np.ones(md.mesh.numberofvertices)*(dc/(1+np.exp(steepness*(md.mesh.y-y_dim/2+gap_halfwidth)))+dc/(1+np.exp(-steepness*(md.mesh.y-y_dim/2-gap_halfwidth))))
+    
+    acc_area=np.where(md.mesh.x<acc_pos)
+    acc=((md.mesh.x[acc_area]-acc_pos)/funnel)**2
+    By[acc_area]=(dc-Bx[acc_area])/(1+np.exp(steepness*(md.mesh.y[acc_area]-y_dim/2+gap_halfwidth+acc)))+(dc-Bx[acc_area])/(1+np.exp(-steepness*(md.mesh.y[acc_area]-y_dim/2-gap_halfwidth-acc)))+Bx[acc_area]
+
+
     bay_area1=np.where(np.logical_and(md.mesh.x>bay_pos1-bay_spread1/2, md.mesh.x<bay_pos1+bay_spread1/2))
     bay_area2=np.where(np.logical_and(md.mesh.x>bay_pos2-bay_spread2/2, md.mesh.x<bay_pos2+bay_spread2/2))
     bay1=-np.sin((md.mesh.x[bay_area1]-bay_spread1/4-bay_pos1)*2*np.pi/bay_spread1)*.5*bay_height1+.5*bay_height1+bay_skew1*md.mesh.x[bay_area1]

@@ -6,15 +6,13 @@ def transientrestart(md, md2, n):
     md2.results.TransientSolution[n].Vy=np.squeeze(md2.results.TransientSolution[n].Vy)
     md2.results.TransientSolution[n].Pressure=np.squeeze(md2.results.TransientSolution[n].Pressure)
     #md.results.TransientSolution[n].Temperature=np.squeeze(md.results.TransientSolution[n].Temperature)
-
-    md2.results.TransientSolution[n].MaskIceLevelset=np.squeeze(md2.results.TransientSolution[n].MaskIceLevelset)
     md2.results.TransientSolution[n].MaskGroundediceLevelset=np.squeeze(md2.results.TransientSolution[n].MaskGroundediceLevelset)
 
     #md.initialization.vel=md.results.TransientSolution[n].Vel
     md.initialization.vx=md2.results.TransientSolution[n].Vx
     md.initialization.vy=md2.results.TransientSolution[n].Vy
     md.initialization.pressure=md2.results.TransientSolution[n].Pressure
-    md.mask.ice_levelset=md2.results.TransientSolution[n].MaskIceLevelset
+#    md.mask.ice_levelset=md2.results.TransientSolution[n].MaskIceLevelset
     md.mask.groundedice_levelset=md2.results.TransientSolution[n].MaskGroundediceLevelset
 
     md2.results.TransientSolution[n].Base=np.squeeze(md2.results.TransientSolution[n].Base)
@@ -25,5 +23,13 @@ def transientrestart(md, md2, n):
     md.geometry.base[deep]=md2.geometry.bed[deep]
     md.geometry.thickness=md2.results.TransientSolution[n].Thickness
     md.geometry.surface=md.geometry.base+md.geometry.thickness
+
+    if hasattr(md2.results.TransientSolution[n], 'MaskIceLevelset'):
+        md2.results.TransientSolution[n].MaskIceLevelset=np.squeeze(md2.results.TransientSolution[n].MaskIceLevelset)
+        md.mask.ice_levelset=md2.results.TransientSolution[n].MaskIceLevelset
+    else:
+        md.mask.ice_levelset=np.ones(md.mesh.numberofvertices)*-1
+        md.mask.ice_levelset[np.where(md2.results.TransientSolution[n].Thickness<2)]=1
+
 
     return md

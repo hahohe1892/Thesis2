@@ -116,12 +116,12 @@ def SpinUp(params, run_name, load_name):
 
 
 
-def SpinUp_load(params, run_name, load_name):
+def SpinUp_load(params, run_name, load_name, fixfront):
 
-    restart_time=20
+    restart_time=-1
     y_dim, x_dim, slope, dc, gap_halfwidth, step = standardvalues()
     x_dim=params['x_dim']
-    
+
     md=loadmodel(load_name) 
     md=transientrestart(md, md, restart_time)
     md.miscellaneous.name=run_name
@@ -134,18 +134,31 @@ def SpinUp_load(params, run_name, load_name):
     md.frontalforcings.meltingrate=params['frontal_melt']*np.ones(md.mesh.numberofvertices)
     md.basalforcings.floatingice_melting_rate=params['floating_melt']*np.ones(md.mesh.numberofvertices)
     md.stressbalance.spcvx[np.where(md.mesh.x<5)]=params['spcvx']
+    
+    md.calving=calvingvonmises()
     md.calving.stress_threshold_groundedice=params['max_stress']
     md.calving.stress_threshold_floatingice=params['max_stress_floating'] 
     md.friction.coefficient=params['friction']*np.ones(md.mesh.numberofvertices)
-    thk_dif=(dc+params['influx_height']+params['null_level'])*np.ones(len(md.mesh.x[np.where(md.mesh.x<5)]))-md.geometry.base[np.where(md.mesh.x<5)]
-    md.masstransport.spcthickness[np.where(md.mesh.x<5)]=thk_dif
-    md.geometry.thickness[np.where(md.mesh.x<5)]=md.masstransport.spcthickness[np.where(md.mesh.x<5)]
-    md.geometry.surface[np.where(md.mesh.x<5)]=md.geometry.base[np.where(md.mesh.x<5)]+md.geometry.thickness[np.where(md.mesh.x<5)]
+
+    if fixfront == True:
+        md.transient.ismovingfront=0
+    else:
+        md.transient.ismovingfront=1
+
+
+    md.smb.mass_balance=np.zeros(md.mesh.numberofvertices)
+    md.smb.mass_balance[np.where(md.mesh.x<10000)]=params['smb']
+
+    md.groundingline.melt_interpolation='FullMeltOnPartiallyFloating'
+    #thk_dif=(dc+params['influx_height']+params['null_level'])*np.ones(len(md.mesh.x[np.where(md.mesh.x<5)]))-md.geometry.base[np.where(md.mesh.x<5)]
+    #md.masstransport.spcthickness[np.where(md.mesh.x<5)]=thk_dif
+    #md.geometry.thickness[np.where(md.mesh.x<5)]=md.masstransport.spcthickness[np.where(md.mesh.x<5)]
+    #md.geometry.surface[np.where(md.mesh.x<5)]=md.geometry.base[np.where(md.mesh.x<5)]+md.geometry.thickness[np.where(md.mesh.x<5)]
     
     return md
 
-def extenddomain(params, run_name, load_name):
-    restart_time=50
+def extenddomain(params, run_name, load_name, fixfront):
+    restart_time=-1
     y_dim, x_dim, slope, dc, gap_halfwidth, step = standardvalues()
     start_icefront=params['start_icefront']
     slab_thickness=params['slab_thickness']
@@ -158,16 +171,16 @@ def extenddomain(params, run_name, load_name):
     generateEXP(params, x_dim, y_dim)
     md=bamg(model(), 'domain','exp_file2.exp', 'hmax',100, 'hmin', 100)
 
-    md.geometry.bed=Geometry(md, y_dim+20000, x_dim, slope, params['bump_spread'], params['bump_height'], params['bump_pos'],params['bump_skew'], steepness, gap_halfwidth, dc, params['bay_spread1'], params['bay_height1'], params['bay_pos1'], params['bay_skew1'],params['bay_spread2'], params['bay_height2'], params['bay_pos2'], params['bay_skew2'],step)
+    md.geometry.bed=Geometry(md, y_dim+20000, x_dim, slope, params['bump_spread'], params['bump_height'], params['bump_pos'],params['bump_skew'], steepness, gap_halfwidth, dc, params['bay_spread1'], params['bay_height1'], params['bay_pos1'], params['bay_skew1'],params['bay_spread2'], params['bay_height2'], params['bay_pos2'], params['bay_skew2'],step, params['smb_pos'], params['funnel'])
     old_mesh_elements=md.mesh.elements
     old_mesh_x=md.mesh.x
     old_mesh_y=md.mesh.y
     old_mesh_geometry=md.geometry.bed
     h=np.nan*np.ones(md.mesh.numberofvertices)
     #h[np.where(np.logical_and(np.logical_and(md.mesh.y<17800, md.mesh.y>12200), np.logical_and(md.mesh.x<65000, md.mesh.x>20000)))]=100  #25000
-    h[np.where(np.logical_and(md.geometry.bed<1200, np.logical_and(md.mesh.x<67000, md.mesh.x>25000)))]=100
+    h[np.where(np.logical_and(md.geometry.bed<1200, np.logical_and(md.mesh.x<85000, md.mesh.x>35000)))]=100
     
-    md=bamg(md, 'field', old_mesh_geometry, 'hmax', 1000, 'hmin', params['hmin'], 'gradation', 1.7, 'hVertices', h)
+    md=bamg(md, 'field', old_mesh_geometry, 'hmax', 1000, 'hmin', params['hmin'], 'gradation', 1, 'hVertices', h)
     md.miscellaneous.name=run_name
 
     md.geometry.bed=InterpFromMeshToMesh2d(old_mesh_elements, old_mesh_x, old_mesh_y, old_mesh_geometry, md.mesh.x, md.mesh.y)[0][:,0]+null_level
@@ -193,12 +206,17 @@ def extenddomain(params, run_name, load_name):
 
 
     ## Parameterization
-    md.smb.mass_balance=np.zeros(md.mesh.numberofvertices)
+    md.smb.mass_balance=np.zeros(md.mesh.numberofvertices) 
+    md.smb.mass_balance[np.where(md.mesh.x<10000)]=params['smb']
     md.calving=calvingvonmises()
 
     md.transient.isgroundingline=1
     md.transient.isthermal=1
-    md.transient.ismovingfront=1
+
+    if fixfront == True:
+        md.transient.ismovingfront=0
+    else:
+        md.transient.ismovingfront=1
 
     md.timestepping.start_time=0
     md.initialization.temperature=(273.15-5.)*np.ones((md.mesh.numberofvertices))
@@ -220,6 +238,7 @@ def extenddomain(params, run_name, load_name):
     ##cutoff
     #md.mask.ice_levelset[np.where(md.mesh.x>90000)]=1
     #md.mask.ice_levelset[np.where(md.geometry.bed>1)]=-1
+    #md.mask.ice_levelset[np.where(md.mask.groundedice_levelset<0)]=1
     ##
     
     md.friction.coefficient=params['friction']*np.ones(md.mesh.numberofvertices)
@@ -259,16 +278,167 @@ def extenddomain(params, run_name, load_name):
     md.initialization.vx[np.where(md.geometry.thickness<=10)]=0
     md.initialization.vy[np.where(md.geometry.thickness<=10)]=0
     
-    thk_dif=(dc+params['influx_height']+params['null_level'])*np.ones(len(md.mesh.x[np.where(md.mesh.x<5)]))-md.geometry.base[np.where(md.mesh.x<5)]
-    thk_dif[np.where(thk_dif<0)]=1
-    md.masstransport.spcthickness[np.where(md.mesh.x<5)]=thk_dif
-    md.geometry.thickness[np.where(md.mesh.x<5)]=md.masstransport.spcthickness[np.where(md.mesh.x<5)]
-    md.geometry.surface[np.where(md.mesh.x<5)]=md.geometry.base[np.where(md.mesh.x<5)]+md.geometry.thickness[np.where(md.mesh.x<5)]
+    #thk_dif=(dc+params['influx_height']+params['null_level'])*np.ones(len(md.mesh.x[np.where(md.mesh.x<5)]))-md.geometry.base[np.where(md.mesh.x<5)]
+    #thk_dif[np.where(thk_dif<0)]=1
+    #md.masstransport.spcthickness[np.where(md.mesh.x<5)]=thk_dif
+    #md.geometry.thickness[np.where(md.mesh.x<5)]=md.masstransport.spcthickness[np.where(md.mesh.x<5)]
+    #md.geometry.surface[np.where(md.mesh.x<5)]=md.geometry.base[np.where(md.mesh.x<5)]+md.geometry.thickness[np.where(md.mesh.x<5)]
+    md.groundingline.melt_interpolation='FullMeltOnPartiallyFloating'
+    md=adddis(md, params)
+    
+    return md
+
+def insertatinflux(params, run_name, load_name, fixfront):
+    restart_time=50
+    inpos=20000
+    y_dim, x_dim, slope, dc, gap_halfwidth, step = standardvalues()
+    start_icefront=params['start_icefront']
+    slab_thickness=params['slab_thickness']
+    steepness=params['steepness']
+    null_level=params['null_level']
+
+    md2=loadmodel(load_name)
+
+    x_dim=params['x_dim']
+    generateEXP(params, x_dim, y_dim)
+    md=bamg(model(), 'domain','exp_file2.exp', 'hmax',100, 'hmin', 100)
+
+    md.geometry.bed=Geometry(md, y_dim+20000, x_dim, slope, params['bump_spread'], params['bump_height'], params['bump_pos'],params['bump_skew'], steepness, gap_halfwidth, dc, params['bay_spread1'], params['bay_height1'], params['bay_pos1'], params['bay_skew1'],params['bay_spread2'], params['bay_height2'], params['bay_pos2'], params['bay_skew2'],step, params['smb_pos'], params['funnel'])
+    old_mesh_elements=md.mesh.elements
+    old_mesh_x=md.mesh.x
+    old_mesh_y=md.mesh.y
+    old_mesh_geometry=md.geometry.bed
+    h=np.nan*np.ones(md.mesh.numberofvertices)
+    #h[np.where(np.logical_and(np.logical_and(md.mesh.y<17800, md.mesh.y>12200), np.logical_and(md.mesh.x<65000, md.mesh.x>20000)))]=100  #25000
+    h[np.where(np.logical_and(md.geometry.bed<1200, np.logical_and(md.mesh.x<90000, md.mesh.x>30000)))]=100
+
+    md=bamg(md, 'field', old_mesh_geometry, 'hmax', 1000, 'hmin', params['hmin'], 'gradation', 1, 'hVertices', h)
+    md.miscellaneous.name=run_name
+    
+    insert_over=np.where(md.mesh.x>inpos)
+    insert_under=np.where(md.mesh.x<inpos)
+
+    md.geometry.bed=InterpFromMeshToMesh2d(old_mesh_elements, old_mesh_x, old_mesh_y, old_mesh_geometry, md.mesh.x, md.mesh.y)[0][:,0]+null_level
+
+    md.geometry.thickness=2000*np.ones(md.mesh.numberofvertices)
+    md.geometry.thickness[insert_over]=InterpFromMeshToMesh2d(md2.mesh.elements, md2.mesh.x+inpos, md2.mesh.y, md2.results.TransientSolution[restart_time].Thickness, md.mesh.x[insert_over], md.mesh.y[insert_over])[0][:,0]
+    #md.geometry.thickness[insert_under]=InterpFromMeshToMesh2d(md2.mesh.elements, md2.mesh.x, md2.mesh.y, md2.results.TransientSolution[restart_time].Thickness, md.mesh.x[insert_under], md.mesh.y[insert_under])[0][:,0]
+    #md.geometry.thickness[insert_under]=np.mean(md2.results.TransientSolution[restart_time].Thickness[np.where(np.logical_and(md2.mesh.x<1000, np.logical_and(md2.mesh.y<17000, md2.mesh.y>13000)))])
+
+    md.mask.groundedice_levelset=np.ones(md.mesh.numberofvertices)
+    md.mask.groundedice_levelset[insert_over]=InterpFromMeshToMesh2d(md2.mesh.elements, md2.mesh.x+inpos, md2.mesh.y, md2.results.TransientSolution[restart_time].MaskGroundediceLevelset, md.mesh.x[insert_over], md.mesh.y[insert_over])[0][:,0]
+
+    md.initialization.pressure=np.ones(md.mesh.numberofvertices)
+    md.initialization.pressure[insert_over]=InterpFromMeshToMesh2d(md2.mesh.elements, md2.mesh.x+inpos, md2.mesh.y, md2.results.TransientSolution[restart_time].Pressure, md.mesh.x[insert_over], md.mesh.y[insert_over])[0][:,0]
+    md.initialization.pressure[insert_under]=InterpFromMeshToMesh2d(md2.mesh.elements, md2.mesh.x, md2.mesh.y, md2.results.TransientSolution[restart_time].Pressure, md.mesh.x[insert_under], md.mesh.y[insert_under])[0][:,0]
+
+#    md.geometry.base=md.geometry.bed
+    md.geometry.base=np.ones(md.mesh.numberofvertices)
+    md.geometry.base[insert_over]=InterpFromMeshToMesh2d(md2.mesh.elements, md2.mesh.x+inpos, md2.mesh.y, md2.results.TransientSolution[restart_time].Base, md.mesh.x[insert_over], md.mesh.y[insert_over])[0][:,0]
+    md.geometry.base[insert_under]=md.geometry.bed[insert_under]
+
+    md.geometry.surface=2000*np.ones(md.mesh.numberofvertices)
+    md.geometry.surface[insert_over]=InterpFromMeshToMesh2d(md2.mesh.elements, md2.mesh.x+inpos, md2.mesh.y, md2.results.TransientSolution[restart_time].Surface, md.mesh.x[insert_over], md.mesh.y[insert_over])[0][:,0]
+    #md.geometry.surface[insert_under]=InterpFromMeshToMesh2d(md2.mesh.elements, md2.mesh.x, md2.mesh.y, md2.results.TransientSolution[restart_time].Surface, md.mesh.x[insert_under], md.mesh.y[insert_under])[0][:,0]
+    md.geometry.surface[insert_under]=np.mean(md2.results.TransientSolution[restart_time].Surface[np.where(np.logical_and(md2.mesh.x<1000, np.logical_and(md2.mesh.y<17000, md2.mesh.y>13000)))])
+
+    md.geometry.surface[np.where(md.geometry.surface<md.geometry.bed)]=md.geometry.bed[np.where(md.geometry.surface<md.geometry.bed)]+1
+    md.geometry.base[np.where(md.mask.groundedice_levelset>0)]=md.geometry.bed[np.where(md.mask.groundedice_levelset>0)]
+    md.geometry.thickness[np.where(md.mask.groundedice_levelset>0)]=md.geometry.surface[np.where(md.mask.groundedice_levelset>0)]-md.geometry.base[np.where(md.mask.groundedice_levelset>0)]
+
+    deep=np.where(md.geometry.base<md.geometry.bed)
+    md.geometry.base[deep]=md.geometry.bed[deep]
+
+
+    md.initialization.vx=params['spcvx']*np.ones(md.mesh.numberofvertices)
+    md.initialization.vx[insert_over]=InterpFromMeshToMesh2d(md2.mesh.elements, md2.mesh.x+inpos, md2.mesh.y, md2.results.TransientSolution[restart_time].Vx, md.mesh.x[insert_over], md.mesh.y[insert_over])[0][:,0]
+    md.initialization.vy=np.zeros(md.mesh.numberofvertices)
+    md.initialization.vy[insert_over]=InterpFromMeshToMesh2d(md2.mesh.elements, md2.mesh.x+inpos, md2.mesh.y, md2.results.TransientSolution[restart_time].Vy, md.mesh.x[insert_over], md.mesh.y[insert_over])[0][:,0]
+
+    md.smb.mass_balance=np.zeros(md.mesh.numberofvertices)
+    md.smb.mass_balance[np.where(md.mesh.x<10000)]=params['smb']
+    md.calving=calvingvonmises()
+
+    md.transient.isgroundingline=1
+    md.transient.isthermal=1
+    if fixfront == True:
+        md.transient.ismovingfront=0
+    else:
+        md.transient.ismovingfront=1
+
+    md.timestepping.start_time=0
+    md.initialization.temperature=(273.15-5.)*np.ones((md.mesh.numberofvertices))
+    md.materials.rheology_n=3*np.ones(md.mesh.numberofelements)
+    md.friction.p=np.ones(md.mesh.numberofelements)
+    md.friction.q=np.ones(md.mesh.numberofelements)
+    md.basalforcings.groundedice_melting_rate=np.zeros(md.mesh.numberofvertices)
+
+    grounded_mask=np.where(md.mask.groundedice_levelset>0)
+    md.geometry.base[grounded_mask]=md.geometry.bed[grounded_mask]
+    md.geometry.surface=md.geometry.base+md.geometry.thickness
+
+
+    mask_pos=np.where(md.geometry.surface>1)
+    md.mask.ice_levelset=np.ones(md.mesh.numberofvertices)
+    md.mask.ice_levelset[mask_pos]=-1
+    md.mask.ice_levelset[np.where(md.geometry.thickness>1)]=-1
+
+    ##cutoff
+    #md.mask.ice_levelset[np.where(md.mesh.x>90000)]=1
+    #md.mask.ice_levelset[np.where(md.geometry.bed>1)]=-1
+    #md.mask.ice_levelset[np.where(md.mask.groundedice_levelset<0)]=1
+    ##
+
+    md.friction.coefficient=params['friction']*np.ones(md.mesh.numberofvertices)
+
+    md.timestepping.final_time=params['final_time']
+    md.timestepping.time_step=params['timestepping']
+    md.settings.output_frequency=params['output_frequency']
+
+    md=setflowequation(md, 'SSA', 'all')
+
+    md=SetMarineIceSheetBC(md)
+
+    md.materials.rheology_B=cuffey(md.initialization.temperature)
+    md.materials.rheology_law='Cuffey'
+
+    md.levelset.spclevelset=np.nan*np.ones(md.mesh.numberofvertices)
+    md.levelset.spclevelset[np.where(md.geometry.bed>0)]=-1
+    md.mask.ice_levelset[np.where(md.levelset.spclevelset==-1)]=-1
+
+    md.stressbalance.spcvx=np.nan*np.ones(md.mesh.numberofvertices)
+    md.stressbalance.spcvx[np.where(md.mesh.x<5)]=params['spcvx']
+    md.stressbalance.spcvy=np.nan*np.ones(md.mesh.numberofvertices)
+    md.stressbalance.spcvy[md.mesh.vertexonboundary]=0
+    #md.stressbalance.spcvy[np.where(md.mesh.x==0)]=np.nan
+   # md.stressbalance.spcvy[np.where(np.logical_and(md.mesh.x<=x_dim, md.mesh.x>=x_dim-100))]=np.nan
+
+    md.masstransport.min_thickness=1
+
+    md.frontalforcings.meltingrate=params['frontal_melt']*np.ones(md.mesh.numberofvertices)
+    md.basalforcings.floatingice_melting_rate=params['floating_melt']*np.ones(md.mesh.numberofvertices)
+    md.cluster=md2.cluster
+
+    md.calving.stress_threshold_groundedice=params['max_stress']
+    md.calving.stress_threshold_floatingice=params['max_stress_floating']
+    md.mask.ice_levelset[np.where(md.geometry.thickness<=10)]=1
+    md.mask.ice_levelset[np.where(md.levelset.spclevelset==-1)]=-1
+    md.initialization.vx[np.where(md.geometry.thickness<=10)]=0
+    md.initialization.vy[np.where(md.geometry.thickness<=10)]=0
+
+    #thk_dif=(dc+params['influx_height']+params['null_level'])*np.ones(len(md.mesh.x[np.where(md.mesh.x<5)]))-md.geometry.base[np.where(md.mesh.x<5)]
+    #thk_dif[np.where(thk_dif<0)]=1
+    #md.masstransport.spcthickness[np.where(md.mesh.x<5)]=thk_dif
+    #md.geometry.thickness[np.where(md.mesh.x<5)]=md.masstransport.spcthickness[np.where(md.mesh.x<5)]
+    #md.geometry.surface[np.where(md.mesh.x<5)]=md.geometry.base[np.where(md.mesh.x<5)]+md.geometry.thickness[np.where(md.mesh.x<5)]
 
     md=adddis(md, params)
-    #md.geometry.surface[np.where(md.geometry.thickness<0)]=md.geometry.bed[np.where(md.geometry.thickness<0)]+1
-    #md.geometry.thickness[np.where(md.geometry.thickness<0)]=1
+
     return md
+
+
+
+
 
 
 
@@ -347,6 +517,7 @@ def remesh(params, run_name, load_name):
     #pressure_undefined=np.nonzero([not isinstance(x, float) for x in md.initialization.pressure]) 
     #md.initialization.pressure[pressure_undefined]=md.materials.rho_ice*md.constants.g*md.geometry.thickness
     md.smb.mass_balance=np.zeros(md.mesh.numberofvertices)
+    md.smb.mass_balance=params['smb']*np.ones(md.mesh.numberofvertices)
     md.calving=calvingvonmises()
 
     md.transient.isgroundingline=1

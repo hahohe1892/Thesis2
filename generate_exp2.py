@@ -10,11 +10,11 @@ import gc
 def generateEXP(params, x_dim, y_dim):
     e=open('./exp_file2.exp', 'w')
     
-    #x_coordinates=[0, int(params['bay_pos1']-(params['bay_spread1'])/2),int(params['bay_pos1']-(params['bay_spread1'])/2), int(params['bay_pos1']+(params['bay_spread1'])/2), int(params['bay_pos1']+(params['bay_spread1'])/2), x_dim, x_dim, int(params['bay_pos2']+(params['bay_spread2'])/2), int(params['bay_pos2']+(params['bay_spread2'])/2), int(params['bay_pos2']-(params['bay_spread2'])/2), int(params['bay_pos2']-(params['bay_spread2'])/2), 0, 0]
-    #y_coordinates=[10000, 10000, 10000-max(params['bay_height1'],0), 10000-max(params['bay_height1'],0), 10000, 10000, 10000+y_dim, 10000+y_dim, 10000+y_dim+max(params['bay_height2'],0), 10000+y_dim+max(params['bay_height2'],0), 10000+y_dim, 10000+y_dim, 10000]
+    x_coordinates=[0, int(params['bay_pos1']-(params['bay_spread1'])/2),int(params['bay_pos1']-(params['bay_spread1'])/2), int(params['bay_pos1']+(params['bay_spread1'])/2), int(params['bay_pos1']+(params['bay_spread1'])/2), x_dim, x_dim, int(params['bay_pos2']+(params['bay_spread2'])/2), int(params['bay_pos2']+(params['bay_spread2'])/2), int(params['bay_pos2']-(params['bay_spread2'])/2), int(params['bay_pos2']-(params['bay_spread2'])/2), 0, 0]
+    y_coordinates=[10000, 10000, 10000-max(params['bay_height1'],0), 10000-max(params['bay_height1'],0), 10000, 10000, 10000+y_dim, 10000+y_dim, 10000+y_dim+max(params['bay_height2'],0), 10000+y_dim+max(params['bay_height2'],0), 10000+y_dim, 10000+y_dim, 10000]
 
-    x_coordinates=[0,x_dim, x_dim, 0,0]
-    y_coordinates=[10000-max(params['bay_height1'],0), 10000-max(params['bay_height1'],0), 10000+y_dim+max(params['bay_height1'],0), 10000+y_dim+max(params['bay_height1'],0), 10000-max(params['bay_height1'],0)]
+    #x_coordinates=[0,x_dim, x_dim, 0,0]
+    #y_coordinates=[10000-max(params['bay_height1'],0), 10000-max(params['bay_height1'],0), 10000+y_dim+max(params['bay_height1'],0), 10000+y_dim+max(params['bay_height1'],0), 10000-max(params['bay_height1'],0)]
     
     p=1
     tuple_list=[]
@@ -36,7 +36,7 @@ def generateEXP(params, x_dim, y_dim):
         else:
             tuple_list.append(check)
             e.write('{} {} \n'.format(x_coordinates[i], y_coordinates[i]))
-    e.write('0 {}'.format(10000-max(params['bay_height1'],0)))
+    e.write('0 {}'.format(10000))
     e.close()
 
     
@@ -220,7 +220,7 @@ def getcontrib(md):
 
 
 def adddis(md, params):
-    step=200
+    step=50
     bay_begin1=int(params['bay_pos1']-params['bay_spread1']/2)
     bay_end1=int(params['bay_pos1']+params['bay_spread1']/2)
     if params['bay_pos1']!=params['bay_pos2']:
@@ -241,10 +241,8 @@ def adddis(md, params):
             central_area=np.where(np.logical_and(md.mesh.y<17000, md.mesh.y>13000))
             reference=np.intersect1d(central_area, uplift_area)
             for q in uplift_area:
-                if md.geometry.surface[q]>np.mean(md.geometry.surface[reference]):# or md.geometry.thickness[q]>np.max(md.geometry.thickness[reference]):
+                if md.geometry.surface[q]<np.mean(md.geometry.surface[reference]):
                     md.geometry.surface[q]=np.mean(md.geometry.surface[reference])
-                    if md.geometry.surface[q]<md.geometry.bed[q]:
-                        md.geometry.surface[q]=md.geometry.bed[q]+1
                     md.geometry.base[q]=md.geometry.bed[q]
                     md.geometry.thickness[q]=md.geometry.surface[q]-md.geometry.base[q]
                     md.mask.ice_levelset[q]=-1
@@ -292,16 +290,12 @@ def addbotbump(md, params):
 def test_func(x,a,b,c):
     return -a*np.exp(-b*x)+c
 
+#mval=[]
 def forecast_mval(mval, testbegin=15, testend=30, extrapolationtime=150):
     x=np.array(list(range(testbegin,testend)))
-    #y=mval[testbegin:testend]
-    y=floating_area[testbegin:testend]
-    y_new=[]
-    for element in y:
-        y_new.append(int(element))
-    #p0=[30000, 0.09, 35000]
-    p0=[50000000.,0.09,50000000.]
-    popt, pcov = curve_fit(test_func, x, y_new,p0)
+    y=mval[testbegin:testend]
+    p0=[30000, 0.09, 35000]
+    popt, pcov = curve_fit(test_func, x, y,p0)
     x2=np.array(list(range(0,extrapolationtime)))
     plot(test_func(x2, *popt))
 
@@ -403,36 +397,4 @@ def findfluxgate(md,params):
 
                     bump_height[i], bump_spread[r], bay_spread1[z], bay_height1[q]
     ind=[i for i, x in enumerate(control_gate) if x]
-
-
-def dwdxcorr(md):
-    mval=[]
-    central_low=np.where(md.geometry.bed<0)
-    for q in range(0, len(md.results.TransientSolution)):
-        thick_criteria=np.where(md.results.TransientSolution[q].Thickness>60)
-        mval.append(np.max(md.mesh.x[np.intersect1d(central_low,thick_criteria)]))
-
-    dx=[]
-    for r in range(0, len(mval)-1):
-        dx.append(mval[r+1]-mval[r])
-
-    wetstep=200
-    wetarea=[]
-    for p in range(0, int(np.max(md.mesh.x)), wetstep):
-        wetarea.append(wetted(md, p, p+wetstep))
-
-    rel_wetarea=[]
-    for t in mval:
-        rel_wetarea.append(wetted(md, t, t+wetstep))
-
-    drelw=[]
-    for i in range(0, len(rel_wetarea)-1):
-        drelw.append(rel_wetarea[i+1]-rel_wetarea[i])
-
-    dw=[]
-    for c in range(0, len(wetarea)-1):
-        dw.append(wetarea[c+1]-wetarea[c])
-
-    plot(drelw, dx, 'rd')
-
-    return mval, dx, rel_wetarea, drelw, wetarea, dw
+        
